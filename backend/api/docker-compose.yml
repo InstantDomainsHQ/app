@@ -1,0 +1,24 @@
+version: "3.3"
+services:
+  api:
+    image: 537408061242.dkr.ecr.us-east-2.amazonaws.com/anyemailfinder:api
+    container_name: api
+    restart: always
+    ports:
+      - '9090:9090'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.anyemailfinder_backend.rule=Host(`api.anyemailfinder.net`)"
+      - "traefik.http.routers.anyemailfinder_backend.service=anyemailfinder_backend"
+      - "traefik.http.services.anyemailfinder_backend.loadbalancer.server.port=9090"
+    networks:
+      - internal_net
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+      - /tmp:/tmp
+
+networks:
+  internal_net:
+    external: true
+

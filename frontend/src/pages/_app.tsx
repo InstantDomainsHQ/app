@@ -1,0 +1,26 @@
+import Head from 'next/head'
+import { AppProps } from 'next/app'
+import '../styles/index.css'
+import '../styles/app.css'
+import 'rsuite/dist/rsuite.min.css';
+import Header from "../components/nav/header";
+import Footer from "../components/nav/footer";
+import {AuthContextProvider} from "@/src/components/context/AuthContext";
+import RequireLogin from "@/src/components/utils/require-login";
+
+function MyApp({ Component, pageProps }: AppProps) {
+  return (
+      <AuthContextProvider>
+      <Head>
+        <title>NextJS TailwindCSS TypeScript Starter</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <script src="/assets/js/flowbite.js" />
+      </Head>
+        <Header/>
+        <RequireLogin><Component {...pageProps} /></RequireLogin>
+        <Footer/>
+      </AuthContextProvider>
+  )
+}
+
+export default MyApp

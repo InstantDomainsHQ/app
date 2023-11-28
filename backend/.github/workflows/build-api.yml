@@ -1,0 +1,119 @@
+#**********************************************************************
+# Build and Deploy AnyEmailFinder API Service
+#**********************************************************************
+
+name: API | Prod
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "backend/api/**"
+env:
+  SKIP_TESTS: true # api container not able to connect to other containers, works locally
+  AWS_REGION_US: 'us-east-2'
+  AWS_ECR_REGISTRY: '537408061242.dkr.ecr.us-east-2.amazonaws.com'
+  AWS_ECR_REPO: 'anyemailfinder'
+  IMAGE_TAG: 'api'
+  PROJECT_NAME: 'api'
+  PROJECT_ROOT: 'backend'
+  AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  GH_USERNAME: ${{ secrets.GH_USERNAME }}
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  SPRING_APPLICATION_NAME: 'anyemailfinder'
+  SPRING_PROFILES_ACTIVE: 'prod'
+  TEST_SPRING_PROFILES_ACTIVE: 'test'
+  TEST_DB_NAME: 'anyemailfinder'
+  TEST_DB_PASSWORD: 'root'
+  TEST_DB_USERNAME: 'root'
+  ARTIFACT_PATH: 'anyemailfinder-api/build'
+jobs:
+#  test:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v2
+#
+#      - name: Setup JDK
+#        uses: actions/setup-java@v3
+#        with:
+#          distribution: 'temurin'
+#          java-version: '20'
+#          cache: 'gradle'
+#
+#      - name: Test project
+#        run: |
+#          chmod +x test.sh
+#          rm -rf Dockerfile
+#          touch Dockerfile
+#
+#          echo "FROM amazoncorretto:20.0.2-alpine3.18" >> Dockerfile
+#          echo EXPOSE 9090 >> Dockerfile
+#          echo COPY backend backend >> Dockerfile
+#          echo WORKDIR backend >> Dockerfile
+#          echo CMD ["\"./gradlew"\", "\":api:build"\", "\"-DSPRING_APPLICATION_NAME=${{ env.SPRING_APPLICATION_NAME }}"\", "\"-DSPRING_PROFILES_ACTIVE=${{ env.TEST_SPRING_PROFILES_ACTIVE }}"\",  "\"-DGH_TOKEN=${{ env.GH_TOKEN }}"\", "\"-DGH_USERNAME=${{ env.GH_USERNAME }}"\", "\"--info"\"] >> Dockerfile
+#
+#          ./test.sh
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_KEY }}
+          aws-region: ${{ env.AWS_REGION_US }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '20'
+          cache: 'gradle'
+
+      - name: Build project and generate artifact
+        run: |
+          cd ${{ env.PROJECT_ROOT }}
+          ./gradlew :${{ env.PROJECT_NAME }}:build -x test
+
+      - name: Create a Dockerfile
+        run: |
+          cd ${{ env.PROJECT_ROOT }}
+          rm -rf Dockerfile
+          touch Dockerfile
+
+          echo "FROM amazoncorretto:20.0.2-alpine3.18" >> Dockerfile
+          echo EXPOSE 9090 >> Dockerfile
+          echo ENV SPRING_APPLICATION_NAME=${{ env.SPRING_APPLICATION_NAME }} >> Dockerfile
+          echo ENV SPRING_PROFILES_ACTIVE=${{ env.SPRING_PROFILES_ACTIVE }} >> Dockerfile
+          echo ENV GH_USERNAME=${{ env.GH_USERNAME }} >> Dockerfile
+          echo ENV GH_TOKEN=${{ env.GH_TOKEN }} >> Dockerfile
+          echo COPY ${{ env.PROJECT_NAME }}/build/libs/app.jar /app.jar >> Dockerfile
+          echo ENTRYPOINT ["\"java\"","\"-jar\"","\"--enable-preview\"","\"/app.jar\""] >> Dockerfile
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ env.AWS_ECR_REGISTRY }}
+          ECR_REPOSITORY: ${{ env.AWS_ECR_REPO }}
+          IMAGE_TAG: ${{ env.IMAGE_TAG }}
+        run: |
+          cd ${{ env.PROJECT_ROOT }}
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      - run: mkdir -p ${{ env.ARTIFACT_PATH }}
+      - run: echo ${{ steps.build-image.outputs.image }} > ${{ env.ARTIFACT_PATH }}/${{ env.IMAGE_TAG }}.txt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: image-tag
+          path: ${{ env.ARTIFACT_PATH }}/${{ env.IMAGE_TAG }}.txt
