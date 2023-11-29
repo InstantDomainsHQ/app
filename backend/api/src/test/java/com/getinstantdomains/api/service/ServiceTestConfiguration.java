@@ -6,7 +6,7 @@ import com.getinstantdomains.api.props.PropConfiguration;
 import com.getinstantdomains.api.utils.mapper.ObjectMapperConfiguration;
 import com.getinstantdomains.api.utils.migration.FlywayMigrationConfiguration;
 import com.getinstantdomains.api.utils.TestUtilConfiguration;
-import net.InstantDomains.api.UserProfile;
+import com.getinstantdomains.api.UserProfile;
 import org.jobrunr.dashboard.JobRunrDashboardWebServer;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

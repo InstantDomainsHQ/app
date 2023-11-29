@@ -16,7 +16,7 @@ import com.getinstantdomains.api.service.ServiceTestConfiguration;
 import java.lang.reflect.Method;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import net.InstantDomains.api.UserProfileResponse;
+import com.getinstantdomains.api.UserProfileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;

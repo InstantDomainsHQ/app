@@ -16,21 +16,12 @@ import org.springframework.context.annotation.Configuration;
     FirebaseProps.class,
     FlywayPostgresProps.class,
     PostgresDataSourceProps.class,
-    SourceProps.class,
     CorsProps.class,
     OpenAiProps.class,
-    MailProps.class,
-    LeadsProps.class,
-    IpAddressProps.class,
-    YouTubeProps.class,
-    MailBlusterProps.class,
-    StaffProps.class,
-    SmartProxyProps.class,
-    ScraperProps.class,
-    RedisProps.class,
-    CrawlerProps.class,
     WebSocketProps.class,
-    EntitlementProps.class
+    RedisProps.class,
+    SourceProps.class,
+    StaffProps.class
 })
 public class PropConfiguration {
 }

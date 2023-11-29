@@ -5,7 +5,7 @@ import com.google.firebase.auth.UserRecord;
 
 import java.io.IOException;
 import java.util.List;
-import net.InstantDomains.api.PageableRequest;
+import com.getinstantdomains.api.PageableRequest;
 
 /**
  * @author Bizuwork Melesse

@@ -16,19 +16,19 @@
     }
   ],
   "paths": {
-    "/leads/find": {
+    "/generate": {
       "post": {
         "tags": [
-          "lead"
+          "domain"
         ],
-        "summary": "Submit search query",
-        "operationId": "submitSearchQuery",
+        "summary": "Generate domains",
+        "operationId": "generateDomains",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SubmitQueryRequest"
+                "$ref": "#/components/schemas/GenerateRequest"
               }
             }
           }
@@ -40,58 +40,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TaskId"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/leads/all": {
-      "post": {
-        "tags": [
-          "lead"
-        ],
-        "summary": "Get all leads",
-        "operationId": "getAllUserLeads",
-        "responses": {
-          "200": {
-            "description": "All leads",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmailSearchResults"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/lead/youtube/channels/result": {
-      "get": {
-        "tags": [
-          "lead"
-        ],
-        "summary": "Get channel query result",
-        "operationId": "getChannelQueryResult",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "job_id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Channel info response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChannelPageableResponse"
                 }
               }
             }
@@ -142,109 +90,42 @@
           }
         }
       },
-      "SubmitQueryRequest": {
+      "GenerateRequest": {
         "type": "object",
         "properties": {
           "query": {
             "type": "string"
-          },
-          "webpage_only": {
-            "type": "boolean"
           }
         }
       },
-      "ChannelPageableResponse": {
-        "type": "object",
-        "required": [
-          "count",
-          "records"
-        ],
-        "properties": {
-          "count": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "records": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/YouTubeChannelDetail"
-            }
-          }
-        }
-      },
-      "EmailSearchResults": {
+      "DomainResults": {
         "type": "object",
         "properties": {
           "results": {
             "type": "object",
             "items": {
-              "$ref": "#/components/schemas/EmailSearchResult"
+              "$ref": "#/components/schemas/DomainResult"
             }
           }
         }
       },
-      "EmailSearchResult": {
+      "DomainResult": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string"
           },
-          "first_name": {
+          "domain_name": {
             "type": "string"
           },
-          "last_name": {
+          "extension": {
             "type": "string"
           },
-          "description": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "keywords": {
-            "type": "string"
-          },
-          "phone_number": {
-            "type": "string"
-          },
-          "job_title": {
-            "type": "string"
-          },
-          "gender": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          },
-          "state": {
-            "type": "string"
-          },
-          "industry": {
-            "type": "string"
-          },
-          "company_name": {
-            "type": "string"
-          },
-          "website": {
-            "type": "string"
-          },
-          "linkedin_profile": {
-            "type": "string"
-          },
-          "age": {
-            "type": "string"
-          },
-          "company_size": {
-            "type": "string"
-          },
-          "verified": {
+          "available": {
             "type": "boolean"
           },
-          "thumbnail": {
-            "type": "string"
+          "for_sale": {
+            "type": "boolean"
           }
         }
       },
@@ -256,72 +137,6 @@
           },
           "data": {
             "type": "object"
-          }
-        }
-      },
-      "YouTubeChannelDetail": {
-        "type": "object",
-        "properties": {
-          "query": {
-            "type": "string"
-          },
-          "first_name": {
-            "type": "string"
-          },
-          "last_name": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "facebook": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "keywords": {
-            "type": "string"
-          },
-          "channel_url": {
-            "type": "string"
-          },
-          "channel_name": {
-            "type": "string"
-          },
-          "channel_handle": {
-            "type": "string"
-          },
-          "subscribers": {
-            "type": "string"
-          },
-          "subscribers_value": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "instagram": {
-            "type": "string"
-          },
-          "twitter": {
-            "type": "string"
-          },
-          "website": {
-            "type": "string"
-          },
-          "blog": {
-            "type": "string"
-          },
-          "snap_chat": {
-            "type": "string"
-          },
-          "discord": {
-            "type": "string"
-          },
-          "tiktok": {
-            "type": "string"
-          },
-          "pinterest": {
-            "type": "string"
           }
         }
       },
@@ -379,18 +194,6 @@
           },
           "auth_mode": {
             "type": "string"
-          },
-          "dashboard_data": {
-            "$ref": "#/components/schemas/DashboardData"
-          }
-        }
-      },
-      "DashboardData": {
-        "type": "object",
-        "properties": {
-          "all_emails": {
-            "type": "integer",
-            "format": "int64"
           }
         }
       },

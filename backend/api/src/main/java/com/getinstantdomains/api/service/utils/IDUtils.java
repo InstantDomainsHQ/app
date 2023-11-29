@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import com.getinstantdomains.api.dto.Pair;
 import com.getinstantdomains.api.dto.SessionUser;
-import com.getinstantdomains.api.props.ScraperProps;
 import com.getinstantdomains.api.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
-import net.InstantDomains.api.UserProfile;
+import com.getinstantdomains.api.UserProfile;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -199,11 +198,6 @@ public class IDUtils {
     return normalized;
   }
 
-  public static long getRandomThrottle(ScraperProps scraperProps) {
-    long min = scraperProps.getThrottleMin();
-    long max = scraperProps.getThrottleMax();
-    return new Random().nextLong((max - min) + 1) + min;
-  }
 
   public static String getSeedUrl(String url) {
     URL urlObj = null;

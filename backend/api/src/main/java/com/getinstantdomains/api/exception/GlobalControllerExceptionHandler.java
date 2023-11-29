@@ -48,7 +48,7 @@ public class GlobalControllerExceptionHandler {
   private String obfuscateMessage(Exception e) {
     if (e.getMessage().contains("org.springframework") ||
         e.getMessage().contains("java.") ||
-        e.getMessage().contains("net.InstantDomains") ||
+        e.getMessage().contains("com.getinstantdomains") ||
         e.getMessage().toLowerCase().contains("JDBC".toLowerCase())) {
       // TODO send all internal errors to slack
       e.printStackTrace();

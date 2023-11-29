@@ -1,7 +1,7 @@
 package com.getinstantdomains.api.service.user;
 
-import net.InstantDomains.api.UserProfile;
-import net.InstantDomains.api.UserProfileResponse;
+import com.getinstantdomains.api.UserProfileResponse;
+import com.getinstantdomains.api.UserProfile;
 
 /**
  * @author Biz Melesse

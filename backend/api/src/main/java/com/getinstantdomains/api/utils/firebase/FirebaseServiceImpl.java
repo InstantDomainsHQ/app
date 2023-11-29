@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.StringJoiner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.InstantDomains.api.PageableRequest;
+import com.getinstantdomains.api.PageableRequest;
 import org.apache.commons.text.WordUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpPost;

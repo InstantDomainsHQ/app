@@ -20,9 +20,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import com.getinstantdomains.api.data.postgres.repo.UserRepo;
 import com.getinstantdomains.api.dto.SessionUser;
-import com.getinstantdomains.api.props.EntitlementProps;
 import com.getinstantdomains.api.utils.firebase.FirebaseService;
 import com.getinstantdomains.api.utils.security.Credentials;
 import com.getinstantdomains.api.utils.security.UnsecurePaths;
@@ -64,8 +62,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class SecurityFilter extends OncePerRequestFilter {
     private final FirebaseService firebaseService;
     private final UnsecurePaths unsecurePaths;
-    private final UserRepo userRepo;
-    private final EntitlementProps entitlementProps;
 
   @Override
   protected void doFilterInternal(HttpServletRequest httpServletRequest,

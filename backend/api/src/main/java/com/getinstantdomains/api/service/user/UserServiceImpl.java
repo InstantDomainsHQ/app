@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.getinstantdomains.api.data.postgres.repo.UserRepo;
 import com.getinstantdomains.api.service.utils.IDUtils;
-import net.InstantDomains.api.UserProfile;
-import net.InstantDomains.api.UserProfileResponse;
+import com.getinstantdomains.api.UserProfile;
+import com.getinstantdomains.api.UserProfileResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
