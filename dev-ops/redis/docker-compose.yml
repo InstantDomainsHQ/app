@@ -1,8 +1,8 @@
 version: "3.6"
 services:
-  fh_redis:
-    container_name: fh_redis
-    hostname: fh_redis
+  id_reds:
+    container_name: id_reds
+    hostname: id_reds
     restart: always
     image: "redis:alpine"
     command: redis-server

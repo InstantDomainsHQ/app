@@ -1,8 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * AnyEmailFinder API
- * AnyEmailFinder API Service
+ * InstantDomains API
+ * InstantDomains API Service
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -18,7 +18,7 @@ import { Configuration } from "./configuration";
 // @ts-ignore
 import globalAxios, { AxiosPromise, AxiosInstance } from 'axios';
 
-const basePath = process.env.NODE_ENV !== 'production' ? "http://localhost:6060" : "https://api.anyemailfinder.net";
+const basePath = process.env.NODE_ENV !== 'production' ? "http://localhost:6060" : "https://api.InstantDomains.net";
 export const BASE_PATH = basePath.replace(/\/+$/, "");
 
 /**

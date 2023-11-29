@@ -18,23 +18,23 @@ services:
       --entrypoints.websecure.address=:443
       --entrypoints.websecure.http.tls=true
       --entrypoints.websecure.http.tls.certResolver=letsencrypt
-      --entrypoints.websecure.http.tls.domains[0].main=anyemailfinder.net
-      --entrypoints.websecure.http.tls.domains[0].sans=*.anyemailfinder.net
+      --entrypoints.websecure.http.tls.domains[0].main=InstantDomains.net
+      --entrypoints.websecure.http.tls.domains[0].sans=*.InstantDomains.net
 
       --certificatesresolvers.letsencrypt.acme.dnschallenge=true
       --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=route53
       --certificatesresolvers.letsencrypt.acme.dnschallenge.delayBeforeCheck=60
-      --certificatesresolvers.letsencrypt.acme.email=biz@anyemailfinder.net
+      --certificatesresolvers.letsencrypt.acme.email=biz@InstantDomains.net
       --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
       --certificatesresolvers.tlsresolver.acme.tlschallenge=true
-      --certificatesresolvers.tlsresolver.acme.email=biz@anyemailfinder.net
+      --certificatesresolvers.tlsresolver.acme.email=biz@InstantDomains.net
       --certificatesresolvers.tlsresolver.acme.storage=/tlsresolver/acme.json
       --certificatesresolvers.tlsresolver.acme.httpchallenge.entrypoint=web
 
     environment:
       - "AWS_ACCESS_KEY_ID="
       - "AWS_SECRET_ACCESS_KEY="
-      - "DNS_ZONE=anyemailfinder.net"
+      - "DNS_ZONE=InstantDomains.net"
     ports:
       - "80:80"
       - "443:443"
@@ -51,7 +51,7 @@ services:
       - traefik.enable=true
       # Redirect all HTTP traffic to HTTPS
       - traefik.http.routers.api.entryPoints=traefik
-      - traefik.http.routers.traefik.rule=Host(`dashboard.anyemailfinder.net`)
+      - traefik.http.routers.traefik.rule=Host(`dashboard.InstantDomains.net`)
       - traefik.http.routers.traefik.middlewares=auth
       - traefik.http.routers.traefik.service=api@internal
       - traefik.http.routers.traefik.tls=true

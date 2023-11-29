@@ -83,7 +83,7 @@ export default function Footer() {
           </div>
           <div
               className="flex flex-col items-center gap-4 mt-12 sm:mt-16 md:flex-row md:justify-between">
-            <p className="text-sm font-medium text-gray-600">© AnyEmailFinder 2023 . All rights
+            <p className="text-sm font-medium text-gray-600">© InstantDomains 2023 . All rights
               reserved</p>
             {/*<ul className="flex items-center justify-center gap-8 md:justify-end">*/}
             {/*  <li>*/}

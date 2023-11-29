@@ -12,9 +12,9 @@ env:
   AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION_US: 'us-east-2'
   AWS_ECR_REGISTRY: '537408061242.dkr.ecr.us-east-2.amazonaws.com'
-  AWS_ECR_REPO: 'anyemailfinder'
+  AWS_ECR_REPO: 'InstantDomains'
   IMAGE_TAG: 'frontend'
-  ARTIFACT_PATH: 'anyemailfinder_frontend/build'
+  ARTIFACT_PATH: 'InstantDomains_frontend/build'
   PROJECT_NAME: 'frontend'
 
 jobs:

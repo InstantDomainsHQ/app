@@ -1,8 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * AnyEmailFinder API
- * AnyEmailFinder API Service
+ * InstantDomains API
+ * InstantDomains API Service
  *
  * The version of the OpenAPI document: 1.0.0
  * 

@@ -1,18 +1,18 @@
 version: '3.8'
 services:
-  hreach:
+  id_pgdb:
     image: postgres
     command: postgres -c 'max_connections=2000'
-    container_name: hreach
-    hostname: hreach
+    container_name: id_pgdb
+    hostname: id_pgdb
     restart: always
     environment:
       - DATABASE_HOST=127.0.0.1
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=rqQoF792aMFAAftP9nse
-      - POSTGRES_DB=hreach
+      - POSTGRES_DB=iddb
     ports:
-      - "6432:5432"
+      - "9432:5432"
     volumes:
       - ./db:/docker-entrypoint-initdb.d/
     networks:

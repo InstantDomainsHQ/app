@@ -35,7 +35,7 @@ const Billing: FC<BillingProps> = (props) => {
                       <p className="text-base font-semibold text-gray-900">You don't have any active
                         plan right now.</p>
                       <p className="text-sm font-medium text-gray-600 mt-1">Please subscribe to a
-                        plan to continue using AnyEmailFinder.</p>
+                        plan to continue using InstantDomains.</p>
                       <div className="mt-5"><a
                           href="/pricing">
                         <button className="isomorphic-link isomorphic-link--internal inline-flex w-full items-center justify-center gap-2 bg-blue-600 text-sm font-semibold text-white shadow-sm transition-all duration-150 rounded-lg px-3 py-2.5 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:cursor-not-allowed sm:w-auto">Get Started</button></a></div>

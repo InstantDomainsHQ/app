@@ -1,4 +1,4 @@
-mainClassName = 'net.anyemailfinder.api.Application'
+mainClassName = 'com.getinstantdomains.api.Application'
 
 
 configurations {
@@ -13,22 +13,14 @@ dependencies {
     implementation 'org.springframework:spring-messaging'
     implementation 'org.java-websocket:Java-WebSocket'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    implementation 'edu.uci.ics:crawler4j'
     implementation 'org.jobrunr:jobrunr-spring-boot-3-starter'
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
-    implementation 'com.google.code.gson:gson'
-    implementation 'com.vladmihalcea:hibernate-types-60'
     implementation 'org.hibernate:hibernate-core'
     implementation 'org.apache.httpcomponents:fluent-hc'
-    implementation 'com.alibaba:fastjson'
-    implementation 'org.jsoup:jsoup'
     implementation 'org.postgresql:postgresql'
     implementation 'org.springframework.cloud:spring-cloud-config-server' // Embed the config server in the main application
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.flywaydb:flyway-core'
-    implementation 'com.amazonaws:aws-java-sdk-s3'
-    implementation 'io.github.resilience4j:resilience4j-spring-boot2'
 
     // OpenAi dependencies
     api 'com.squareup.retrofit2:retrofit'

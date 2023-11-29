@@ -67,7 +67,7 @@ export default function Profile() {
                               className="pointer-events-none absolute flex items-center inset-y-0 right-0 pr-3"></div>
                       </div>
                     </div>
-                    {/*<p className="text-sm leading-6 text-gray-600 mt-2">Contact support@anyemailfinder.net*/}
+                    {/*<p className="text-sm leading-6 text-gray-600 mt-2">Contact support@InstantDomains.net*/}
                     {/*  to change the email address.</p>*/}
                   </div>
                   {/*<button type="submit" name="_action" value="UPDATE_USER"*/}

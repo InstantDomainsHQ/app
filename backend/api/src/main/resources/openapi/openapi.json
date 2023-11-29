@@ -1,17 +1,17 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "AnyEmailFinder API",
-    "description": "AnyEmailFinder API Service",
+    "title": "InstantDomains API",
+    "description": "InstantDomains API Service",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "https://api.anyemailfinder.net",
+      "url": "https://api.getinstantdomains.com",
       "description": "Prod"
     },
     {
-      "url": "http://localhost:6060",
+      "url": "http://localhost:6868",
       "description": "Dev"
     }
   ],
