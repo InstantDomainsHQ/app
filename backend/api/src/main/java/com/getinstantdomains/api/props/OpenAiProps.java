@@ -16,11 +16,12 @@ import org.springframework.context.annotation.Primary;
 @ConfigurationProperties(prefix = "openai")
 public class OpenAiProps {
     private int numRetries = 3;
+    private int numCompletions = 1;
     private String apiKey;
     private String embeddingModel = "text-embedding-ada-002";
     private String completionModel = "gpt-3.5-turbo";
     private String systemMessage;
-    private String domainGeneratePrompt = "You are tasked with generating domain name suggestions for a given business area provided as a context below. Please generate 100 domain names. They should be short, preferably two or three words long. Two would be best. Do not include the domain extension. Return the result as a JSON array.";
+    private String domainGeneratePrompt = "You are tasked with generating domain names for a given business area provided as a context below. The context can be a few keywords or a brief description of the business. Please generate 10 domain names. They should be short, preferably two or three words long. Two would be best. All domain names must start with https:// and end with .com. Return the result as a JSON array.";
     private long requestTimeoutSeconds = 120;
     private double temp = 0.7;
     private int maxTokens = 4000;

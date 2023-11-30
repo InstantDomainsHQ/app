@@ -25,7 +25,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @Import({
     DataConfiguration.class,
     MapperConfiguration.class,
-    OpenAIConfiguration.class,
+//    OpenAIConfiguration.class,
     WebSocketConfiguration.class,
     FlywayMigrationConfiguration.class})
 public class ServiceConfiguration {

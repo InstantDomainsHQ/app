@@ -5,12 +5,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.getinstantdomains.api.GenerateRequest;
 import com.getinstantdomains.api.TaskId;
+import com.getinstantdomains.api.dto.DomainName;
 import com.getinstantdomains.api.props.OpenAiProps;
 import com.getinstantdomains.api.service.gpt.GptService;
 import com.getinstantdomains.api.service.utils.IDUtils;
 import java.time.Instant;
 import java.util.List;
-import java.util.StringJoiner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -32,24 +32,21 @@ public class DomainServiceImpl implements DomainService {
     if (!ObjectUtils.isEmpty(generateRequest.getQuery()) && 
         generateRequest.getQuery().split(" ").length > 1) {
       String taskId = "t_" + IDUtils.generateUid(IDUtils.SHORT_UID_LENGTH);
-      submitGenerateJob(generateRequest.getQuery());
+      submitGenerateJob(generateRequest.getQuery(), generateRequest.getClientId());
       return new TaskId().taskId(taskId);
     }
     return new TaskId();
   }
 
-  private void submitGenerateJob(String query) {
-    StringJoiner j = new StringJoiner("\n");
-    j.add("CONTEXT:");
-    j.add(query);
+  private void submitGenerateJob(String query, String clientId) {
     var then = Instant.now().getEpochSecond();
-    String result = gptService.gptCompletion(openAiProps.getDomainGeneratePrompt(), j.toString());
+    String result = gptService.gptCompletion(clientId, openAiProps.getDomainGeneratePrompt(), query);
     var now = Instant.now().getEpochSecond();
     log.info("Total generation time: {}s", now - then);
     if (!ObjectUtils.isEmpty(result)) {
-      TypeReference<List<String>> typeRef = new TypeReference<>(){};
+      TypeReference<List<DomainName>> typeRef = new TypeReference<>(){};
       try {
-        List<String> generatedDomains =  objectMapper.readValue(result, typeRef);
+        List<DomainName> generatedDomains =  objectMapper.readValue(result, typeRef);
         int x = 1;
       } catch (JsonProcessingException e) {
         log.error("submitGenerateJob: {}", e.getLocalizedMessage());
