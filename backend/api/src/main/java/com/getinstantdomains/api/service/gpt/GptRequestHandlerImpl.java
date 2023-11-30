@@ -4,8 +4,8 @@ import static com.theokanning.openai.service.OpenAiService.defaultClient;
 import static com.theokanning.openai.service.OpenAiService.defaultRetrofit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.getinstantdomains.api.data.postgres.repo.DomainsRepo;
 import com.getinstantdomains.api.props.OpenAiProps;
+import com.getinstantdomains.api.service.domain.DomainService;
 import com.theokanning.openai.client.OpenAiApi;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
@@ -15,12 +15,10 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.StringJoiner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import okhttp3.OkHttpClient;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import retrofit2.Retrofit;
 
 /**
@@ -31,17 +29,14 @@ public class GptRequestHandlerImpl implements GptRequestHandler {
   private final ObjectMapper objectMapper;
   private final OpenAiProps openAiProps;
   private final OpenAiService openAiService;
-  private final DomainsRepo domainsRepo;
-  private final SimpMessagingTemplate messagingTemplate;
+  private final DomainService domainService;
 
   public GptRequestHandlerImpl(String clientId, ObjectMapper objectMapper,
-      OpenAiProps openAiProps, DomainsRepo domainsRepo,
-      SimpMessagingTemplate messagingTemplate) {
+      OpenAiProps openAiProps, DomainService domainService) {
     this.clientId = clientId;
     this.objectMapper = objectMapper;
     this.openAiProps = openAiProps;
-    this.domainsRepo = domainsRepo;
-    this.messagingTemplate = messagingTemplate;
+    this.domainService = domainService;
     this.openAiService = buildClient();
   }
 
@@ -81,14 +76,10 @@ public class GptRequestHandlerImpl implements GptRequestHandler {
               .replace("https://", "")
               .replace(".com", "");
           chunks.clear();
-          processDomainName(domain);
+          domainService.performWhois(domain, clientId);
         }
       }
     }, Throwable::printStackTrace, openAiService::shutdownExecutor);
-  }
-
-  private void processDomainName(String domain) {
-    System.out.printf("%s: %s: %s\n", Instant.now().getEpochSecond(), clientId, domain);
   }
 
   private List<String> extractUrls(List<String> chunks) {

@@ -20,8 +20,14 @@ comment on table public.user is 'Basic user information';
 CREATE TABLE IF NOT EXISTS public.domains (
     id varchar(255) NOT NULL primary key,
     domain_name varchar(255) NOT NULL,
-    status text,
+    extension varchar(255) NOT NULL,
+    registrar_name varchar(255) NOT NULL,
+    registrar_url varchar(255) NOT NULL,
+    whois_url varchar(255) NOT NULL,
+    registered_at timestamptz DEFAULT CURRENT_TIMESTAMP,
+    expires_at timestamptz DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(domain_name, extension)
 );
 ALTER TABLE public.domains OWNER TO root;

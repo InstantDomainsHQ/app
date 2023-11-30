@@ -143,6 +143,37 @@
           }
         }
       },
+      "DomainName": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "extension": {
+            "type": "string"
+          },
+          "is_available": {
+            "type": "boolean"
+          },
+          "expires_at": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "registered_at": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "registrar_name": {
+            "type": "string"
+          },
+          "registrar_url": {
+            "type": "string"
+          }
+        }
+      },
       "UserProfileResponse": {
         "type": "object",
         "properties": {

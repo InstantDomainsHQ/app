@@ -30,8 +30,28 @@ public class DomainsEntity {
     private String domainName;
 
     @Basic
-    @Column(name = "status")
-    private String status;
+    @Column(name = "extension")
+    private String extension;
+
+    @Basic
+    @Column(name = "registrar_name")
+    private String registrarName;
+
+    @Basic
+    @Column(name = "registrar_url")
+    private String registrarUrl;
+
+    @Basic
+    @Column(name = "whois_url")
+    private String whoisUrl;
+
+    @Basic
+    @Column(name = "registered_at")
+    private LocalDateTime registeredAt = LocalDateTime.now();
+
+    @Basic
+    @Column(name = "expires_at")
+    private LocalDateTime expiresAt = LocalDateTime.now();
 
     @Basic
     @Column(name = "updated_at")

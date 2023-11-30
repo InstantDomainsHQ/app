@@ -8,4 +8,6 @@ import com.getinstantdomains.api.TaskId;
  */
 public interface DomainService {
   TaskId generateDomains(GenerateRequest generateRequest);
+  void performWhois(String domain, String clientId);
+
 }
