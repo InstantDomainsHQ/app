@@ -11,6 +11,7 @@ import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +57,8 @@ public class GptRequestHandlerImpl implements GptRequestHandler {
 
   @Override
   public void handler(List<ChatMessage> messages) {
+    final long start = Instant.now().getEpochSecond();
+    System.out.println("Start: " + start);
     final List<String> chunks = new ArrayList<>();
     ChatCompletionRequest request = ChatCompletionRequest.builder()
         .messages(messages)
@@ -85,7 +88,7 @@ public class GptRequestHandlerImpl implements GptRequestHandler {
   }
 
   private void processDomainName(String domain) {
-    System.out.printf("%s: %s\n", clientId, domain);
+    System.out.printf("%s: %s: %s\n", Instant.now().getEpochSecond(), clientId, domain);
   }
 
   private List<String> extractUrls(List<String> chunks) {
