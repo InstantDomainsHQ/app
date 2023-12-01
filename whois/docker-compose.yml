@@ -1,0 +1,12 @@
+version: "3.3"
+services:
+  whois:
+    build: .
+    container_name: whois
+    hostname: "whois"
+    restart: always
+    environment:
+      - PROXY_HOST=
+      - PROXY_PORT=
+    ports:
+      - "8181:8181"
