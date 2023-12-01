@@ -21,7 +21,8 @@ import org.springframework.context.annotation.Configuration;
     WebSocketProps.class,
     RedisProps.class,
     SourceProps.class,
-    StaffProps.class
+    StaffProps.class,
+    DomainProps.class
 })
 public class PropConfiguration {
 }

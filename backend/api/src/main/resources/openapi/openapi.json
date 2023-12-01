@@ -143,7 +143,7 @@
           }
         }
       },
-      "DomainName": {
+      "DomainWhoIs": {
         "type": "object",
         "properties": {
           "id": {
@@ -152,7 +152,7 @@
           "name": {
             "type": "string"
           },
-          "extension": {
+          "tld": {
             "type": "string"
           },
           "is_available": {

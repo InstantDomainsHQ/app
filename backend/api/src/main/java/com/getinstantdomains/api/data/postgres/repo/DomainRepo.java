@@ -1,7 +1,7 @@
 package com.getinstantdomains.api.data.postgres.repo;
 
 
-import com.getinstantdomains.api.data.postgres.entity.DomainsEntity;
+import com.getinstantdomains.api.data.postgres.entity.DomainEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,5 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional
-public interface DomainsRepo extends JpaRepository<DomainsEntity, String> {
+public interface DomainRepo extends JpaRepository<DomainEntity, String> {
+  DomainEntity findByDomainName(String name);
 }

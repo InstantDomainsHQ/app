@@ -18,7 +18,7 @@ import lombok.Setter;
 @Getter @Setter
 @Entity
 @Table(schema = "public", name = "domains")
-public class DomainsEntity {
+public class DomainEntity {
 
     @Id
     @Column(name = "id")
@@ -28,34 +28,6 @@ public class DomainsEntity {
     @Basic
     @Column(name = "domain_name")
     private String domainName;
-
-    @Basic
-    @Column(name = "extension")
-    private String extension;
-
-    @Basic
-    @Column(name = "registrar_name")
-    private String registrarName;
-
-    @Basic
-    @Column(name = "registrar_url")
-    private String registrarUrl;
-
-    @Basic
-    @Column(name = "whois_url")
-    private String whoisUrl;
-
-    @Basic
-    @Column(name = "registered_at")
-    private LocalDateTime registeredAt = LocalDateTime.now();
-
-    @Basic
-    @Column(name = "expires_at")
-    private LocalDateTime expiresAt = LocalDateTime.now();
-
-    @Basic
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
 
     @Basic
     @Column(name = "created_at")
