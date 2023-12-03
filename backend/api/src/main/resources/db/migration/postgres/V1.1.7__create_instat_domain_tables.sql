@@ -29,22 +29,10 @@ CREATE TABLE IF NOT EXISTS public.tlds (
     id varchar(255) NOT NULL primary key,
     domain_id varchar(255) NOT NULL,
     tld varchar(255) NOT NULL,
-    registrar_name varchar(255) NOT NULL,
-    registrar_url varchar(255) NOT NULL,
-    whois_url varchar(255) NOT NULL,
-    registered_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    expires_at timestamptz DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    status text,
+    expires_at timestamptz,
+    updated_at timestamptz,
+    registered_at timestamptz,
     UNIQUE(domain_id, tld)
 );
 ALTER TABLE public.tlds OWNER TO root;
-
-CREATE TABLE IF NOT EXISTS public.whois_server (
-    id varchar(255) NOT NULL primary key,
-    tld varchar(255) NOT NULL,
-    server varchar(255) NOT NULL,
-    created_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(tld)
-);
-ALTER TABLE public.whois_server OWNER TO root;

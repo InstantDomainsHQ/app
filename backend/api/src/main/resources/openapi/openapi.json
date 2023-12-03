@@ -101,37 +101,6 @@
           }
         }
       },
-      "DomainResults": {
-        "type": "object",
-        "properties": {
-          "results": {
-            "type": "object",
-            "items": {
-              "$ref": "#/components/schemas/DomainResult"
-            }
-          }
-        }
-      },
-      "DomainResult": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "domain_name": {
-            "type": "string"
-          },
-          "extension": {
-            "type": "string"
-          },
-          "available": {
-            "type": "boolean"
-          },
-          "for_sale": {
-            "type": "boolean"
-          }
-        }
-      },
       "WebsocketPayload": {
         "type": "object",
         "properties": {
@@ -165,12 +134,6 @@
           "registered_at": {
             "type": "integer",
             "format": "int64"
-          },
-          "registrar_name": {
-            "type": "string"
-          },
-          "registrar_url": {
-            "type": "string"
           }
         }
       },

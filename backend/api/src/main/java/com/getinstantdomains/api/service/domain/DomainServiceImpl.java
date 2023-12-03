@@ -46,8 +46,7 @@ public class DomainServiceImpl implements DomainService {
 
   @Override
   public TaskId generateDomains(GenerateRequest generateRequest) {
-    WhoIsResponse response = callWhoisProxy("github.com");
-    int x = 1;
+    performWhois(generateRequest.getQuery(), generateRequest.getClientId());
 //    if (!ObjectUtils.isEmpty(generateRequest.getQuery()) &&
 //        generateRequest.getQuery().split(" ").length > 1) {
 //      String taskId = "t_" + IDUtils.generateUid(IDUtils.SHORT_UID_LENGTH);
@@ -63,7 +62,6 @@ public class DomainServiceImpl implements DomainService {
   @Override
   public void performWhois(String domain, final String clientId) {
     domain = domain.toLowerCase().strip().replace(" ", "");
-//    System.out.printf("WHOIS: %s: %s: %s\n", Instant.now().getEpochSecond(), clientId, domain);
     DomainEntity domainEntity = domainRepo.findByDomainName(domain);
     if (domainEntity == null) {
       domainEntity = new DomainEntity();
@@ -77,7 +75,13 @@ public class DomainServiceImpl implements DomainService {
 
     Thread.startVirtualThread(() -> sendTldsToClient(d, tlds, clientId));
 
-    domainProps.getTlds().stream().forEach(it -> {
+//    domainProps.getTlds().stream().forEach(it -> {
+//      Thread.startVirtualThread(() -> whois(d, it, clientId));
+//    });
+//    List.of(".ai", ".fyi", ".co.uk", ".gg")
+    List.of(".co.uk"
+        )
+        .stream().forEach(it -> {
       Thread.startVirtualThread(() -> whois(d, it, clientId));
     });
   }
@@ -86,7 +90,7 @@ public class DomainServiceImpl implements DomainService {
     String fullDomain = domain.getDomainName() + tld;
 
     // Do whois lookup here
-    WhoIsResponse whoisResponse = callWhoisProxy(String.format("%s%s", domain.getDomainName(), tld));
+    WhoIsResponse whoisResponse = callWhoisProxy(fullDomain);
 
 
     // Update any existing record
@@ -101,20 +105,24 @@ public class DomainServiceImpl implements DomainService {
     }
 
     // Update with the latest data and save
-    tldEntity.setRegisteredAt(LocalDateTime.now());
-    tldEntity.setExpiresAt(LocalDateTime.now());
-    tldEntity.setRegistrarUrl("hi");
-    tldEntity.setRegistrarName("hi");
-    tldEntity.setWhoisUrl("hi");
+    tldEntity.setRegisteredAt(getLocalDateTime(whoisResponse.getCreatedAt()));
+    tldEntity.setExpiresAt(getLocalDateTime(whoisResponse.getExpiresAt()));
+    tldEntity.setUpdatedAt(getLocalDateTime(whoisResponse.getUpdatedAt()));
+    try {
+      tldEntity.setStatus(objectMapper.writeValueAsString(whoisResponse.getDomainStatus()));
+    } catch (JsonProcessingException e) {
+      log.error(e.getLocalizedMessage());
+    }
     tldRepo.save(tldEntity);
 
     // Send to client
     sendTldsToClient(domain, List.of(tldEntity), clientId);
   }
 
-  private String getWhoIsServer(String tld) {
-    String[] parts = tld.split("\\.");
-    String tldSuffix = parts[parts.length - 1];
+  private LocalDateTime getLocalDateTime(Long value) {
+    if (value != null) {
+      return LocalDateTime.ofEpochSecond(value, 0, ZoneOffset.UTC);
+    }
     return null;
   }
 
@@ -157,9 +165,7 @@ public class DomainServiceImpl implements DomainService {
               .tld(tld.getTld())
               .isAvailable(domainIsAvailable(tld))
               .expiresAt(getTimestamp(tld.getExpiresAt()))
-              .registeredAt(getTimestamp(tld.getRegisteredAt()))
-              .registrarName(tld.getRegistrarName())
-              .registrarUrl(tld.getRegistrarUrl()),
+              .registeredAt(getTimestamp(tld.getRegisteredAt())),
           clientId);
     }
   }
@@ -172,7 +178,7 @@ public class DomainServiceImpl implements DomainService {
   }
 
   private Boolean domainIsAvailable(TldEntity tld) {
-    return tld.getRegisteredAt() == null || tld.getExpiresAt() != null && tld.getExpiresAt().isAfter(
+    return tld.getRegisteredAt() == null || tld.getExpiresAt() != null && tld.getExpiresAt().isBefore(
         LocalDateTime.now());
   }
 
@@ -187,7 +193,7 @@ public class DomainServiceImpl implements DomainService {
     WebsocketPayload payload = new WebsocketPayload()
         .type(DomainWhoIs.class.getSimpleName())
         .data(whoIs);
-//    _log(payload);
+    _log(payload);
     messagingTemplate.convertAndSendToUser(
         clientId,
         webSocketProps.getQueue(),

@@ -34,30 +34,18 @@ public class TldEntity {
     private String tld;
 
     @Basic
-    @Column(name = "registrar_name")
-    private String registrarName;
-
-    @Basic
-    @Column(name = "registrar_url")
-    private String registrarUrl;
-
-    @Basic
-    @Column(name = "whois_url")
-    private String whoisUrl;
+    @Column(name = "status")
+    private String status;
 
     @Basic
     @Column(name = "registered_at")
-    private LocalDateTime registeredAt = LocalDateTime.now();
+    private LocalDateTime registeredAt;
 
     @Basic
     @Column(name = "expires_at")
-    private LocalDateTime expiresAt = LocalDateTime.now();
+    private LocalDateTime expiresAt;
 
     @Basic
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
-
-    @Basic
-    @Column(name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 }
