@@ -10,6 +10,7 @@ import com.getinstantdomains.api.data.postgres.entity.DomainEntity;
 import com.getinstantdomains.api.data.postgres.entity.TldEntity;
 import com.getinstantdomains.api.data.postgres.repo.DomainRepo;
 import com.getinstantdomains.api.data.postgres.repo.TldRepo;
+import com.getinstantdomains.api.dto.WhoIsResponse;
 import com.getinstantdomains.api.props.DomainProps;
 import com.getinstantdomains.api.props.OpenAiProps;
 import com.getinstantdomains.api.props.WebSocketProps;
@@ -45,7 +46,8 @@ public class DomainServiceImpl implements DomainService {
 
   @Override
   public TaskId generateDomains(GenerateRequest generateRequest) {
-    callWhoisProxy("github.com");
+    WhoIsResponse response = callWhoisProxy("github.com");
+    int x = 1;
 //    if (!ObjectUtils.isEmpty(generateRequest.getQuery()) &&
 //        generateRequest.getQuery().split(" ").length > 1) {
 //      String taskId = "t_" + IDUtils.generateUid(IDUtils.SHORT_UID_LENGTH);
@@ -84,7 +86,7 @@ public class DomainServiceImpl implements DomainService {
     String fullDomain = domain.getDomainName() + tld;
 
     // Do whois lookup here
-    String whoisResponse = callWhoisProxy(String.format("%s%s", domain.getDomainName(), tld));
+    WhoIsResponse whoisResponse = callWhoisProxy(String.format("%s%s", domain.getDomainName(), tld));
 
 
     // Update any existing record
@@ -116,7 +118,7 @@ public class DomainServiceImpl implements DomainService {
     return null;
   }
 
-  private String callWhoisProxy(String domainName) {
+  private WhoIsResponse callWhoisProxy(String domainName) {
     String url = String.format("http://localhost:3000/api/v1/whois?domainName=%s", domainName);
     String responseBody = null;
     // Create a Request object with the specified URL
@@ -139,7 +141,12 @@ public class DomainServiceImpl implements DomainService {
     } catch (Exception e) {
       log.error(e.getLocalizedMessage());
     }
-    return responseBody;
+    try {
+      return objectMapper.readValue(responseBody, WhoIsResponse.class);
+    } catch (JsonProcessingException e) {
+      log.error(e.getLocalizedMessage());
+    }
+    return null;
   }
 
   private void sendTldsToClient(DomainEntity domainEntity, List<TldEntity> tlds, String clientId) {
