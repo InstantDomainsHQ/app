@@ -14,13 +14,6 @@ import com.getinstantdomains.api.props.DomainProps;
 import com.getinstantdomains.api.props.OpenAiProps;
 import com.getinstantdomains.api.props.WebSocketProps;
 import com.getinstantdomains.api.service.gpt.GptService;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
@@ -32,8 +25,6 @@ import okhttp3.Response;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-import sockslib.client.Socks5;
-import sockslib.client.SocksSocket;
 
 /**
  * @author Biz Melesse created on 11/28/23
@@ -54,7 +45,7 @@ public class DomainServiceImpl implements DomainService {
 
   @Override
   public TaskId generateDomains(GenerateRequest generateRequest) {
-    whoisRequest("domain");
+    callWhoisProxy("github.com");
 //    if (!ObjectUtils.isEmpty(generateRequest.getQuery()) &&
 //        generateRequest.getQuery().split(" ").length > 1) {
 //      String taskId = "t_" + IDUtils.generateUid(IDUtils.SHORT_UID_LENGTH);
@@ -93,8 +84,7 @@ public class DomainServiceImpl implements DomainService {
     String fullDomain = domain.getDomainName() + tld;
 
     // Do whois lookup here
-//    String whoisResponse = callWhoisProxy(domain, tld);
-    whoisRequest("domain");
+    String whoisResponse = callWhoisProxy(String.format("%s%s", domain.getDomainName(), tld));
 
 
     // Update any existing record
@@ -124,115 +114,10 @@ public class DomainServiceImpl implements DomainService {
     String[] parts = tld.split("\\.");
     String tldSuffix = parts[parts.length - 1];
     return null;
-
   }
 
-  private String whoisRequest(String domain) {
-    // Set the SOCKS proxy details
-    String proxyHost = "p.webshare.io";
-    proxyHost = "82.165.209.112";
-//    proxyHost = "foodwallah.com";
-    int proxyPort = 1080;
-    String proxyUsername = "uqkfmujm-US-rotate";
-    String proxyPassword = "7o7on85qml8d";
-
-    // Set the WHOIS server details for github.com
-    String whoisServer = "whois.verisign-grs.com";
-    int whoisPort = 43;
-
-    try {
-      // Create a SOCKS proxy with authentication
-      Socks5 proxy = new Socks5(new InetSocketAddress(proxyHost, proxyPort));
-//      proxy.setCredentials(new UsernamePasswordCredentials(proxyUsername, proxyPassword));
-
-      // Create a SocksSocket using the proxy
-      SocksSocket socket = new SocksSocket(proxy, new InetSocketAddress(whoisServer, whoisPort));
-
-      // Send WHOIS query
-      String query = "github.com";
-      socket.getOutputStream().write(query.getBytes());
-
-      // Read and print the WHOIS response
-      BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-      while (socket.isConnected()) {
-        String line = reader.readLine();
-        if (line != null) {
-          log.info("SOCKET DATA: {}", line);
-        }
-      }
-
-      // Close the socket when done
-      socket.close();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
-
-  private String whoisRequest2(String domain) {
-    // Set the SOCKS proxy details
-    String proxyHost = "p.webshare.io";
-    int proxyPort = 80;
-    String proxyUsername = "uqkfmujm-US-rotate";
-    String proxyPassword = "7o7on85qml8d";
-
-    // Set the WHOIS server details for github.com
-    String whoisServer = "whois.verisign-grs.com'";
-    int whoisPort = 43;
-
-    try {
-      // Create a Proxy with SOCKS5 and authentication
-      Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(proxyHost, proxyPort));
-
-      // Create a Socket using the proxy
-      Socket socket = new Socket(proxy);
-
-      // Send SOCKS5 authentication
-      sendSocks5Authentication(socket.getOutputStream(), proxyUsername, proxyPassword);
-
-      // Connect to the SOCKS proxy
-      socket.connect(new InetSocketAddress(proxyHost, proxyPort));
-
-      // Connect to the WHOIS server
-      socket.connect(new InetSocketAddress(whoisServer, whoisPort));
-
-      // Send WHOIS query
-      String query = "github.com\r\n";
-      socket.getOutputStream().write(query.getBytes());
-
-      // Read and print the WHOIS response
-      BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-      String line;
-      while ((line = reader.readLine()) != null) {
-        System.out.println(line);
-      }
-
-      // Close the socket when done
-      socket.close();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
-
-  private static void sendSocks5Authentication(OutputStream outputStream, String username, String password) throws IOException {
-    // Version 5, 2 authentication methods (NO AUTHENTICATION and USERNAME/PASSWORD)
-    byte[] authMethods = {5, 2, 2};
-    outputStream.write(authMethods);
-
-    // Send username and password
-    byte[] usernameBytes = username.getBytes();
-    byte[] passwordBytes = password.getBytes();
-
-    outputStream.write(usernameBytes.length);
-    outputStream.write(usernameBytes);
-
-    outputStream.write(passwordBytes.length);
-    outputStream.write(passwordBytes);
-  }
-
-  private String callWhoisProxy(DomainEntity domain, String tld) {
-    String url = String.format("http://localhost:8181/whois/%s%s", domain.getDomainName(), tld);
+  private String callWhoisProxy(String domainName) {
+    String url = String.format("http://localhost:3000/api/v1/whois?domainName=%s", domainName);
     String responseBody = null;
     // Create a Request object with the specified URL
     Request request = new Request.Builder()

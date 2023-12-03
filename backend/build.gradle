@@ -51,8 +51,6 @@ configure(subprojects.findAll(it ->
   apply plugin: 'io.swagger.core.v3.swagger-gradle-plugin'
 
   dependencies {
-    implementation 'com.github.mike10004:fengyouchao-sockslib:1.0.6'
-    implementation 'org.jitsi:jsocks:1.0.1-jitsi-1'
     implementation 'com.theokanning.openai-gpt3-java:api:0.18.2'
     implementation 'com.theokanning.openai-gpt3-java:service:0.18.2'
     implementation 'dnsjava:dnsjava:3.5.3'

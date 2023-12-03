@@ -2,7 +2,6 @@ const express = require('express');
 const whoisLib = require('xep-whois')
 const {ProxyType} = require("xep-whois");
 const whoisClient = whoisLib.whois
-// const whoisOptions = whoisLib.WhoIsOptions
 
 const router = express.Router();
 
@@ -28,10 +27,10 @@ async function whoisLookup(domain) {
 
 }
 
-router.post('/', async (req, res) => {
-  console.log("req: ", req.body)
+router.get('/', async (req, res) => {
+  console.log("req: ", req.query.domainName)
   res.json({
-    data: await whoisLookup(req.body.domains[0])
+    data: await whoisLookup(req.query.domainName)
   });
 });
 
