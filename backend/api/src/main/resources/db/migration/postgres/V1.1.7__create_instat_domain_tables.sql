@@ -39,3 +39,12 @@ CREATE TABLE IF NOT EXISTS public.tlds (
     UNIQUE(domain_id, tld)
 );
 ALTER TABLE public.tlds OWNER TO root;
+
+CREATE TABLE IF NOT EXISTS public.whois_server (
+    id varchar(255) NOT NULL primary key,
+    tld varchar(255) NOT NULL,
+    server varchar(255) NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(tld)
+);
+ALTER TABLE public.whois_server OWNER TO root;

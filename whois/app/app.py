@@ -31,8 +31,8 @@ def parse_whois(whois_result):
 def whois(domain_name):
   data = {}
   try:
-    # p = Pois(timeout=60, proxy_info=proxy_info)
-    p = Pois(timeout=60)
+    p = Pois(timeout=60, proxy_info=proxy_info)
+    # p = Pois()
     result = p.fetch(domain=domain_name)
     data = parse_whois(result.get())
   except Exception as err:

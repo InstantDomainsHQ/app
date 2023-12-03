@@ -1,7 +1,7 @@
 package com.getinstantdomains.api.data.postgres.repo;
 
 
-import com.getinstantdomains.api.data.postgres.entity.UserEntity;
+import com.getinstantdomains.api.data.postgres.entity.WhoIsServerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +13,5 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional
-public interface UserRepo extends JpaRepository<UserEntity, String> {
-
+public interface WhoIsServerRepo extends JpaRepository<WhoIsServerEntity, String> {
 }

@@ -171,61 +171,67 @@ class SocketPipeline:
 
     def execute(self, query, server, port):
         """Send query to server."""
-        # try:
-        print("debug 1")
-        # proxy_host_1 = "p.webshare.io"
-        # proxy_port_1 = 80
-        # proxy_username_1 = "uqkfmujm-rotate"
-        # proxy_password_1 = "7o7on85qml8d"
-        # print("a: ", proxy_host_1, proxy_port_1, proxy_username_1,proxy_password_1)
-        # print("a", len(proxy_host_1), len(str(proxy_port_1)), len(proxy_username_1),len(proxy_password_1))
+        try:
+            print("debug 1")
+            # proxy_host_1 = "p.webshare.io"
+            # proxy_port_1 = 80
+            # proxy_username_1 = "uqkfmujm-rotate"
+            # proxy_password_1 = "7o7on85qml8d"
+            # print("a: ", proxy_host_1, proxy_port_1, proxy_username_1,proxy_password_1)
+            # print("a", len(proxy_host_1), len(str(proxy_port_1)), len(proxy_username_1),len(proxy_password_1))
 
-        proxy_host = self.sanitized_proxy_info.get("addr")
-        proxy_port = self.sanitized_proxy_info.get("port")
-        proxy_username = self.sanitized_proxy_info.get("username")
-        proxy_password = self.sanitized_proxy_info.get("password")
-        # print(proxy_host_1 == proxy_host, proxy_port_1 == proxy_port, proxy_username_1 == proxy_username, proxy_password_1 == proxy_password)
+            proxy_host = self.sanitized_proxy_info.get("addr")
+            print("debug a")
+            proxy_port = 80 #int(self.sanitized_proxy_info.get("port"))
+            print("debug b")
+            proxy_username = self.sanitized_proxy_info.get("username")
+            print("debug c")
+            proxy_password = self.sanitized_proxy_info.get("password")
+            # print(proxy_host_1 == proxy_host, proxy_port_1 == proxy_port, proxy_username_1 == proxy_username, proxy_password_1 == proxy_password)
 
-        print("debug 2")
-        # print("p1: ", proxy_port_1)
-        # print("p2: ", proxy_port)
-        # print("b: ", proxy_host, proxy_port, proxy_username,proxy_password)
-        # print("b", len(proxy_host), len(str(proxy_port)), len(proxy_username),len(proxy_password))
+            print("debug 2")
+            # print("p1: ", proxy_port_1)
+            # print("p2: ", proxy_port)
+            # print("b: ", proxy_host, proxy_port, proxy_username,proxy_password)
+            # print("b", len(proxy_host), len(str(proxy_port)), len(proxy_username),len(proxy_password))
 
-        # Create a SOCKS proxy connection
-        s = socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
-        s.set_proxy(socks.SOCKS5, proxy_host, proxy_port, username=proxy_username, password=proxy_password)
-        s.settimeout(self.timeout)
-        print("(server, port):",(server, port))
-        s.connect((server, port))
-        s.send(query.encode("utf-8"))
-        result = b""
-        while True:
-            chunk = s.recv(4096)
-            result += chunk
-            if not chunk:
-                break
+            # Create a SOCKS proxy connection
+            s = socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
+            s.set_proxy(socks.SOCKS5, proxy_host, proxy_port, username=proxy_username, password=proxy_password)
+            s.settimeout(self.timeout)
+            print("(server, port):",(server, port))
+            s.connect(("whois.verisign-grs.com", 43))
+            print("connected....")
+            s.send(query.encode("utf-8"))
+            print("sent....")
+            result = b""
+            while True:
+                print("in while...")
+                chunk = s.recv(4096)
+                result += chunk
+                if not chunk:
+                    break
 
-        # whois result encoding from some domains has problems in utf-8 so we ignore that characters, for ex whois result of `controlaltdelete.pt`
-        decoded_result = result.decode("utf-8")
-        # try:
-        #     decoded_result = result.decode("utf-8")
-        # except UnicodeDecodeError:
-        #     result_encoding = chardet.detect(result)["encoding"]
-        #     decoded_result = result.decode(result_encoding)
-        # return decoded_result
+            print("result: ",result)
+            # whois result encoding from some domains has problems in utf-8 so we ignore that characters, for ex whois result of `controlaltdelete.pt`
+            try:
+                decoded_result = result.decode("utf-8")
+            except UnicodeDecodeError:
+                result_encoding = chardet.detect(result)["encoding"]
+                decoded_result = result.decode(result_encoding)
+            return decoded_result
 
-    # except (socks.ProxyConnectionError, socket.timeout):
-    #     raise SocketTimeoutError(
-    #         "time out on quering %s for %s" % (server, query.strip())
-    #     )
-    # except Exception as err:
-    #     raise SocketError(
-    #         "error on quering %s for %s, err: %s"
-    #         % (server, query.strip(), str(err))
-    #     )
-    # finally:
-    #     s.close()
+        except (socks.ProxyConnectionError, socket.timeout):
+            raise SocketTimeoutError(
+                "time out on quering %s for %s" % (server, query.strip())
+            )
+        except Exception as err:
+            raise SocketError(
+                "error on quering %s for %s, err: %s"
+                % (server, query.strip(), str(err))
+            )
+        finally:
+            s.close()
 
 
 class Url:
