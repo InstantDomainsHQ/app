@@ -16,14 +16,10 @@ function toTimestamp(dateString) {
 }
 
 async function whoisLookup(domain) {
-  var host = 'whois.verisign-grs.com';
-  var hostPort = 43;
   var proxyIp = '82.165.209.112';
   var proxyPort = 1080;
 
   var options = {
-    server: host,
-    serverPort: hostPort,
     proxy: {
       ip: proxyIp,
       port: proxyPort,
@@ -32,7 +28,7 @@ async function whoisLookup(domain) {
   };
   var res = await whoisClient(domain, true, options);
 
-  console.log(res)
+  // console.log(res)
   console.log(res.parsedData);
   if (res["parsedData"]) {
     return {
