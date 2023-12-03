@@ -15,8 +15,14 @@ function toTimestamp(dateString) {
   return null;
 }
 
-async function parseUkDomain(whoisResult, domain) {
-  const strToDate = (dateString) => moment.utc(dateString, 'DD-MMM-YYYY').unix()
+async function parseIrregularWhois(whoisResult, domain) {
+  const strToDate = (dateString) => {
+    if (domain.endsWith(".co.uk")) {
+      return moment.utc(dateString, 'DD-MMM-YYYY').unix();
+    } else if (domain.endsWith(".gg")) {
+      return moment(dateString, 'Do MMMM YYYY [at] HH:mm:ss.SSS').unix();
+    }
+  }
   if (whoisResult) {
     const parts = whoisResult["_raw"].split("\n");
     let registeredOn, expiryDate, updatedAt;
@@ -28,8 +34,8 @@ async function parseUkDomain(whoisResult, domain) {
         continue;
       }
       if (relevantDates) {
-        if (line.startsWith("Registered on:")) {
-          registeredOn = strToDate(line.split("Registered on:")[1].trim());
+        if (line.startsWith("Registered on")) {
+          registeredOn = strToDate(line.split("Registered on")[1].trim());
         } else if (line.startsWith("Expiry date:")) {
           expiryDate = strToDate(line.split("Expiry date:")[1].trim());
         } else if (line.startsWith("Last updated:")) {
@@ -41,7 +47,8 @@ async function parseUkDomain(whoisResult, domain) {
       domainName: registeredOn && updatedAt && expiryDate ? domain : null,
       createdAt: registeredOn,
       updatedAt: updatedAt,
-      expiresAt: expiryDate
+      expiresAt: expiryDate,
+      domainStatus: []
     }
   }
   return {}
@@ -60,9 +67,9 @@ async function whoisLookup(domain) {
   };
   var res = await whoisClient(domain, true, options);
 
-  console.debug(res.parsedData);
-  if (domain.endsWith(".co.uk")) {
-    return await parseUkDomain(res, domain)
+  console.debug(res);
+  if (domain.endsWith(".co.uk") || domain.endsWith(".gg")) {
+    return await parseIrregularWhois(res, domain)
   }
   if (res["parsedData"]) {
     return {

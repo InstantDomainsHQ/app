@@ -15,6 +15,7 @@ import com.getinstantdomains.api.props.DomainProps;
 import com.getinstantdomains.api.props.OpenAiProps;
 import com.getinstantdomains.api.props.WebSocketProps;
 import com.getinstantdomains.api.service.gpt.GptService;
+import com.getinstantdomains.api.service.utils.IDUtils;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
@@ -46,16 +47,15 @@ public class DomainServiceImpl implements DomainService {
 
   @Override
   public TaskId generateDomains(GenerateRequest generateRequest) {
-    performWhois(generateRequest.getQuery(), generateRequest.getClientId());
-//    if (!ObjectUtils.isEmpty(generateRequest.getQuery()) &&
-//        generateRequest.getQuery().split(" ").length > 1) {
-//      String taskId = "t_" + IDUtils.generateUid(IDUtils.SHORT_UID_LENGTH);
-//      gptService.gptCompletion(
-//          generateRequest.getClientId(),
-//          openAiProps.getDomainGeneratePrompt(),
-//          generateRequest.getQuery(), this);
-//      return new TaskId().taskId(taskId);
-//    }
+    if (!ObjectUtils.isEmpty(generateRequest.getQuery()) &&
+        generateRequest.getQuery().split(" ").length > 1) {
+      String taskId = "t_" + IDUtils.generateUid(IDUtils.SHORT_UID_LENGTH);
+      gptService.gptCompletion(
+          generateRequest.getClientId(),
+          openAiProps.getDomainGeneratePrompt(),
+          generateRequest.getQuery(), this);
+      return new TaskId().taskId(taskId);
+    }
     return new TaskId();
   }
 
@@ -75,13 +75,7 @@ public class DomainServiceImpl implements DomainService {
 
     Thread.startVirtualThread(() -> sendTldsToClient(d, tlds, clientId));
 
-//    domainProps.getTlds().stream().forEach(it -> {
-//      Thread.startVirtualThread(() -> whois(d, it, clientId));
-//    });
-//    List.of(".ai", ".fyi", ".co.uk", ".gg")
-    List.of(".co.uk"
-        )
-        .stream().forEach(it -> {
+    domainProps.getTlds().stream().forEach(it -> {
       Thread.startVirtualThread(() -> whois(d, it, clientId));
     });
   }
