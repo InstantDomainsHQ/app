@@ -47,6 +47,27 @@
         }
       }
     },
+    "/tlds": {
+      "post": {
+        "tags": [
+          "domain"
+        ],
+        "summary": "Get all supported tlds",
+        "operationId": "getTlds",
+        "responses": {
+          "200": {
+            "description": "Task id and status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TldResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/": {
       "get": {
         "tags": [
@@ -79,6 +100,17 @@
       }
     },
     "schemas": {
+      "TldResponse": {
+        "type": "object",
+        "properties": {
+          "tlds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "TaskId": {
         "type": "object",
         "properties": {
@@ -94,9 +126,6 @@
         "type": "object",
         "properties": {
           "query": {
-            "type": "string"
-          },
-          "client_id": {
             "type": "string"
           }
         }

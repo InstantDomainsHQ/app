@@ -24,174 +24,58 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 /**
  * 
  * @export
- * @interface ChannelPageableResponse
+ * @interface DomainWhoIs
  */
-export interface ChannelPageableResponse {
-    /**
-     * 
-     * @type {number}
-     * @memberof ChannelPageableResponse
-     */
-    count: number;
-    /**
-     * 
-     * @type {Array<YouTubeChannelDetail>}
-     * @memberof ChannelPageableResponse
-     */
-    records: Array<YouTubeChannelDetail>;
-}
-/**
- * 
- * @export
- * @interface DashboardData
- */
-export interface DashboardData {
-    /**
-     * 
-     * @type {number}
-     * @memberof DashboardData
-     */
-    all_emails?: number;
-}
-/**
- * 
- * @export
- * @interface EmailSearchResult
- */
-export interface EmailSearchResult {
+export interface DomainWhoIs {
     /**
      * 
      * @type {string}
-     * @memberof EmailSearchResult
+     * @memberof DomainWhoIs
      */
     id?: string;
     /**
      * 
      * @type {string}
-     * @memberof EmailSearchResult
+     * @memberof DomainWhoIs
      */
-    first_name?: string;
+    name?: string;
     /**
      * 
      * @type {string}
-     * @memberof EmailSearchResult
+     * @memberof DomainWhoIs
      */
-    last_name?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof EmailSearchResult
-     */
-    description?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof EmailSearchResult
-     */
-    email?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof EmailSearchResult
-     */
-    keywords?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof EmailSearchResult
-     */
-    phone_number?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof EmailSearchResult
-     */
-    job_title?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof EmailSearchResult
-     */
-    gender?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof EmailSearchResult
-     */
-    country?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof EmailSearchResult
-     */
-    city?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof EmailSearchResult
-     */
-    state?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof EmailSearchResult
-     */
-    industry?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof EmailSearchResult
-     */
-    company_name?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof EmailSearchResult
-     */
-    website?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof EmailSearchResult
-     */
-    linkedin_profile?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof EmailSearchResult
-     */
-    age?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof EmailSearchResult
-     */
-    company_size?: string;
+    tld?: string;
     /**
      * 
      * @type {boolean}
-     * @memberof EmailSearchResult
+     * @memberof DomainWhoIs
      */
-    verified?: boolean;
+    is_available?: boolean;
     /**
      * 
-     * @type {string}
-     * @memberof EmailSearchResult
+     * @type {number}
+     * @memberof DomainWhoIs
      */
-    thumbnail?: string;
+    expires_at?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof DomainWhoIs
+     */
+    registered_at?: number;
 }
 /**
  * 
  * @export
- * @interface EmailSearchResults
+ * @interface GenerateRequest
  */
-export interface EmailSearchResults {
+export interface GenerateRequest {
     /**
      * 
-     * @type {Array<EmailSearchResult>}
-     * @memberof EmailSearchResults
+     * @type {string}
+     * @memberof GenerateRequest
      */
-    results?: Array<EmailSearchResult>;
+    query?: string;
 }
 /**
  * 
@@ -252,25 +136,6 @@ export interface PageableRequest {
 /**
  * 
  * @export
- * @interface SubmitQueryRequest
- */
-export interface SubmitQueryRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof SubmitQueryRequest
-     */
-    query?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof SubmitQueryRequest
-     */
-    webpage_only?: boolean;
-}
-/**
- * 
- * @export
  * @interface TaskId
  */
 export interface TaskId {
@@ -286,6 +151,19 @@ export interface TaskId {
      * @memberof TaskId
      */
     status?: string;
+}
+/**
+ * 
+ * @export
+ * @interface TldResponse
+ */
+export interface TldResponse {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof TldResponse
+     */
+    tlds?: Array<string>;
 }
 /**
  * 
@@ -347,12 +225,6 @@ export interface UserProfile {
      * @memberof UserProfile
      */
     auth_mode?: string;
-    /**
-     * 
-     * @type {DashboardData}
-     * @memberof UserProfile
-     */
-    dashboard_data?: DashboardData;
 }
 /**
  * 
@@ -392,218 +264,24 @@ export interface WebsocketPayload {
      */
     data?: object;
 }
-/**
- * 
- * @export
- * @interface YouTubeChannelDetail
- */
-export interface YouTubeChannelDetail {
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    query?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    first_name?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    last_name?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    email?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    facebook?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    description?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    keywords?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    channel_url?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    channel_name?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    channel_handle?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    subscribers?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof YouTubeChannelDetail
-     */
-    subscribers_value?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    instagram?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    twitter?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    website?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    blog?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    snap_chat?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    discord?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    tiktok?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof YouTubeChannelDetail
-     */
-    pinterest?: string;
-}
 
 /**
- * LeadApi - axios parameter creator
+ * DomainApi - axios parameter creator
  * @export
  */
-export const LeadApiAxiosParamCreator = function (configuration?: Configuration) {
+export const DomainApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Get all leads
+         * @summary Generate domains
+         * @param {GenerateRequest} generateRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllUserLeads: async (options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/leads/all`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Get channel query result
-         * @param {string} jobId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getChannelQueryResult: async (jobId: string, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'jobId' is not null or undefined
-            assertParamExists('getChannelQueryResult', 'jobId', jobId)
-            const localVarPath = `/lead/youtube/channels/result`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (jobId !== undefined) {
-                localVarQueryParameter['job_id'] = jobId;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Submit search query
-         * @param {SubmitQueryRequest} submitQueryRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        submitSearchQuery: async (submitQueryRequest: SubmitQueryRequest, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'submitQueryRequest' is not null or undefined
-            assertParamExists('submitSearchQuery', 'submitQueryRequest', submitQueryRequest)
-            const localVarPath = `/leads/find`;
+        generateDomains: async (generateRequest: GenerateRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'generateRequest' is not null or undefined
+            assertParamExists('generateDomains', 'generateRequest', generateRequest)
+            const localVarPath = `/generate`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -622,7 +300,37 @@ export const LeadApiAxiosParamCreator = function (configuration?: Configuration)
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(submitQueryRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(generateRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get all supported tlds
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTlds: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/tlds`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -633,126 +341,93 @@ export const LeadApiAxiosParamCreator = function (configuration?: Configuration)
 };
 
 /**
- * LeadApi - functional programming interface
+ * DomainApi - functional programming interface
  * @export
  */
-export const LeadApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = LeadApiAxiosParamCreator(configuration)
+export const DomainApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = DomainApiAxiosParamCreator(configuration)
     return {
         /**
          * 
-         * @summary Get all leads
+         * @summary Generate domains
+         * @param {GenerateRequest} generateRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllUserLeads(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EmailSearchResults>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllUserLeads(options);
+        async generateDomains(generateRequest: GenerateRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TaskId>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.generateDomains(generateRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
-         * @summary Get channel query result
-         * @param {string} jobId 
+         * @summary Get all supported tlds
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getChannelQueryResult(jobId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelPageableResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getChannelQueryResult(jobId, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary Submit search query
-         * @param {SubmitQueryRequest} submitQueryRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async submitSearchQuery(submitQueryRequest: SubmitQueryRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TaskId>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.submitSearchQuery(submitQueryRequest, options);
+        async getTlds(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TldResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getTlds(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
 };
 
 /**
- * LeadApi - factory interface
+ * DomainApi - factory interface
  * @export
  */
-export const LeadApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = LeadApiFp(configuration)
+export const DomainApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = DomainApiFp(configuration)
     return {
         /**
          * 
-         * @summary Get all leads
+         * @summary Generate domains
+         * @param {GenerateRequest} generateRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllUserLeads(options?: any): AxiosPromise<EmailSearchResults> {
-            return localVarFp.getAllUserLeads(options).then((request) => request(axios, basePath));
+        generateDomains(generateRequest: GenerateRequest, options?: any): AxiosPromise<TaskId> {
+            return localVarFp.generateDomains(generateRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @summary Get channel query result
-         * @param {string} jobId 
+         * @summary Get all supported tlds
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getChannelQueryResult(jobId: string, options?: any): AxiosPromise<ChannelPageableResponse> {
-            return localVarFp.getChannelQueryResult(jobId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Submit search query
-         * @param {SubmitQueryRequest} submitQueryRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        submitSearchQuery(submitQueryRequest: SubmitQueryRequest, options?: any): AxiosPromise<TaskId> {
-            return localVarFp.submitSearchQuery(submitQueryRequest, options).then((request) => request(axios, basePath));
+        getTlds(options?: any): AxiosPromise<TldResponse> {
+            return localVarFp.getTlds(options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * LeadApi - object-oriented interface
+ * DomainApi - object-oriented interface
  * @export
- * @class LeadApi
+ * @class DomainApi
  * @extends {BaseAPI}
  */
-export class LeadApi extends BaseAPI {
+export class DomainApi extends BaseAPI {
     /**
      * 
-     * @summary Get all leads
+     * @summary Generate domains
+     * @param {GenerateRequest} generateRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof LeadApi
+     * @memberof DomainApi
      */
-    public getAllUserLeads(options?: any) {
-        return LeadApiFp(this.configuration).getAllUserLeads(options).then((request) => request(this.axios, this.basePath));
+    public generateDomains(generateRequest: GenerateRequest, options?: any) {
+        return DomainApiFp(this.configuration).generateDomains(generateRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @summary Get channel query result
-     * @param {string} jobId 
+     * @summary Get all supported tlds
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof LeadApi
+     * @memberof DomainApi
      */
-    public getChannelQueryResult(jobId: string, options?: any) {
-        return LeadApiFp(this.configuration).getChannelQueryResult(jobId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Submit search query
-     * @param {SubmitQueryRequest} submitQueryRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof LeadApi
-     */
-    public submitSearchQuery(submitQueryRequest: SubmitQueryRequest, options?: any) {
-        return LeadApiFp(this.configuration).submitSearchQuery(submitQueryRequest, options).then((request) => request(this.axios, this.basePath));
+    public getTlds(options?: any) {
+        return DomainApiFp(this.configuration).getTlds(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

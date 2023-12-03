@@ -1,40 +1,41 @@
-import {ERROR, getSearchResults} from "@/src/components/utils/server-utils";
+import {ERROR, getSearchResults, getTlds} from "@/src/components/utils/server-utils";
 import React, {useEffect, useState} from "react";
 import {useAuthContext} from "@/src/components/context/AuthContext";
 import * as Stomp from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import ListView from "@/src/components/list";
+import ListView, {TldInfo, WhoIsMap} from "@/src/components/list";
 import {STRINGS} from "@/src/components/utils/constants";
-import {EmailSearchResult, EmailSearchResults, WebsocketPayload} from "@/src/codegen";
+import {DomainWhoIs, WebsocketPayload} from "@/src/codegen";
 import { InfinitySpin } from  'react-loader-spinner'
 import {getAuthToken} from "@/src/components/utils/headerConfig";
 
 export default function SearchBox() {
   const {authUser} = useAuthContext()
   const [query, setQuery] = useState('')
-  const [emails, setEmails] = useState<Array<EmailSearchResult>>([])
   const [inProgress, setInProgress] = useState(false)
   const [maybeShowNoResultsFound, setMaybeShowNoResultsFound] = useState(false)
-  const [category, setCategory] = useState("website")
-  const [option, setOption] = useState("full_website")
-  const [taskId, setTaskId] = useState('')
   const [authToken, setAuthToken] = useState("")
+  const [whoIsResults, setWhoIsResults] = useState<Array<WhoIsMap>>([])
 
   useEffect(() => {
     getAuthToken(authUser)
     .then(token => {
       setAuthToken(token)
+      fetchTlds()
     })
   }, [authUser])
 
+  const fetchTlds = () => {
+    getTlds(authUser).then(result => {
+      localStorage.setItem(STRINGS.TLDS, JSON.stringify(result))
+    }).catch(e => ERROR(e));
+  }
 
-  const handleSubscription = (messageOutput) => {
+  const handleSubscription = (messageOutput: any) => {
     if (messageOutput && messageOutput.body) {
       const payload = JSON.parse(messageOutput.body) as WebsocketPayload;
-      if (payload.type === "EmailSearchResults") {
-        handleNewSearchResults(payload.data as EmailSearchResults)
-      } else if (payload.type === "TaskStatus") {
-        handleTaskStatusUpdate(payload.data as string)
+      if (payload.type === "DomainWhoIs") {
+        handleNewSearchResults(payload.data as DomainWhoIs)
       }
     }
   };
@@ -42,7 +43,7 @@ export default function SearchBox() {
   useEffect(() => {
     // REACT_APP_WS_URL=http://localhost:8080/ws
     document.cookie = `Authorization=${authToken}`
-    const wsStompUrl = `http:/localhost:6060/ws`
+    const wsStompUrl = `http:/localhost:6868/ws`
     const sock = new SockJS(wsStompUrl)
     try {
       const client = Stomp.Stomp.over(() => sock);
@@ -55,22 +56,16 @@ export default function SearchBox() {
     }
   }, [authToken])
 
-  const loadPrevSearchResults = (): Array<EmailSearchResult> => {
-    const items = localStorage.getItem(STRINGS.SEARCH_RESULTS)
-    if (items) {
-      return JSON.parse(items)
-    }
-    return []
-  }
 
   const clearSearchResults = (): void => {
     localStorage.setItem(STRINGS.SEARCH_RESULTS, JSON.stringify([]))
-    setEmails([])
+    setWhoIsResults([])
   }
 
-  const saveSearchResults = (items: string[]): void => {
+  const saveSearchResults = (items: Array<WhoIsMap>): void => {
+    // console.log("saving items: ", items)
     localStorage.setItem(STRINGS.SEARCH_RESULTS, JSON.stringify(items))
-    setEmails(items);
+    setWhoIsResults(items)
   }
 
   const onChange = (e) => {
@@ -78,77 +73,87 @@ export default function SearchBox() {
     setQuery(e.target.value)
   }
 
-  const onOptionsChange = (e) => {
-    e.preventDefault()
-    setOption(e.target.value)
-  }
-
-  const onCategoryChange = (e) => {
-    e.preventDefault()
-    const value = e.target.value
-    setCategory(value)
-    if (value === "youtube") {
-      setOption("blank")
-    }
-  }
-
-  const getPlaceholder = () => {
-    if (category === "website") {
-      return "Eg. https://example.com"
-    } else {
-      return "Eg. How to make sourdough bread"
-    }
-  }
-
-  const disableOptions = () => {
-    return category === "youtube"
-  }
-
-
   const onSearch = () => {
     let value = query?.trim()
     if (value) {
-      value = value.startsWith("http") ? value : "https://" + value
       clearSearchResults()
       setInProgress(true)
-
       getSearchResults(value, authUser).then(res => {});
     }
   }
 
-  const handleNewSearchResults = (payload: EmailSearchResults) => {
-    if (payload?.results) {
+  const handleNewSearchResults = (payload: DomainWhoIs) => {
+    if (payload) {
       const oldList = loadPrevSearchResults()
-      const oldIds = oldList.map(it => it.id)
-      const newEmails = [...payload.results];
-      const unique = [];
+      // console.log("oldList: ", oldList)
+      const existingWhoIsList = oldList.filter(it => it.id === payload.id)
+      if (existingWhoIsList && existingWhoIsList.length > 0) {
+        const existing = existingWhoIsList[0]
+        // console.log(payload)
 
-      for (let e of newEmails) {
-        if (!oldIds.includes(e.id)) {
-          unique.push(e);
+        // console.log("existing: ", existing)
+        existing.tlds.set(payload.tld, {
+          tld: payload.tld,
+          is_available: payload.is_available,
+          expires_at: payload.expires_at,
+          registered_at: payload.registered_at
+        })
+
+      } else {
+        const tlds = new Map<string, TldInfo>()
+        if (payload.tld) {
+          tlds.set(payload.tld, {
+            tld: payload.tld,
+            is_available: payload.is_available,
+            expires_at: payload.expires_at,
+            registered_at: payload.registered_at
+          })
         }
+        oldList.push({
+          id: payload.id,
+          domainName: payload.name,
+          tlds: tlds
+        })
+        // console.log("old list about to save....: ", oldList)
       }
-      const updatedList = [...unique, ...oldList];
-      saveSearchResults(updatedList)
+      // const oldIds = oldList.map(it => it.id)
+      // const newEmails = [...payload.results];
+      // const unique = [];
+
+      // for (let e of newEmails) {
+      //   if (!oldIds.includes(e.id)) {
+      //     unique.push(e);
+      //   }
+      // }
+      // const updatedList = [...oldList];
+      saveSearchResults([...oldList])
     }
   }
 
-  const handleTaskStatusUpdate = (status: string) => {
-    if (status === "Completed") {
-      setInProgress(false)
-      setMaybeShowNoResultsFound(loadPrevSearchResults().length === 0)
+  const loadPrevSearchResults = (): Array<WhoIsMap> => {
+    const items = localStorage.getItem(STRINGS.SEARCH_RESULTS)
+    if (items) {
+      const arr = JSON.parse(items) as Array<WhoIsMap>
+      // console.log("arr: ", arr)
+      arr.forEach((it: WhoIsMap) => {
+        // console.log("it: ", new Map(Object.entries(it.tlds)))
+        // console.log(typeof it)
+        it.tlds = new Map(Object.entries(it.tlds))
+        // console.log("it: ", it)
+        // return {
+        //   id: it.id,
+        //   domainName: it.domainName,
+        //   tlds: it.tlds ? new Map<string, TldInfo>(it.tlds) : new Map<string, TldInfo>(),
+        // }
+      });
+      return arr
     }
+    return []
   }
 
   return (
       <section className="container px-4 mx-auto py-6">
         <div className="m-6 w-screen max-w-screen-md mx-auto">
-          <div className="max-w-xl mx-auto text-center lg:max-w-4xl">
-            {/*<h1 className="text-base font-bold uppercase tracking-widest text-blue-600">Features</h1>*/}
-            <p className="font-display text-2xl font-bold tracking-tight text-gray-900 mt-5 sm:text35xl lg:text-4xl">Find Verified Emails </p>
-            <p className="max-w-3xl text-base font-normal text-gray-700 mx-auto mt-5 sm:text-sm lg:text-sm">Provide a link to your target website below</p>
-          </div>
-
           <div className="flex flex-col">
             <div className="rounded-xl  bg-white p-6 ">
               <div>
@@ -165,7 +170,7 @@ export default function SearchBox() {
                         name="search"
                         onChange={onChange}
                         className="h-12 block w-full rounded-md border border-gray-100 bg-gray-100 pl-10 px-10 py-4 pr-40 pl-12 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                        type="text" placeholder={getPlaceholder()}
+                        type="text" placeholder={'Search to your hearts content'}
                         value={query}/>
                   </div>
                   <div>
@@ -176,58 +181,11 @@ export default function SearchBox() {
                   </div>
 
                 </div>
-
-                {/*<div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">*/}
-                {/*  /!*<div className="flex flex-col">*!/*/}
-                {/*  /!*  <label htmlFor="query-category"*!/*/}
-                {/*  /!*         className="text-sm font-medium text-stone-600">Category</label>*!/*/}
-
-                {/*  /!*  <select id="query-category"*!/*/}
-                {/*  /!*          onChange={onCategoryChange}*!/*/}
-                {/*  /!*          className="mt-2 block w-full rounded-md border border-gray-100 bg-gray-100 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50">*!/*/}
-                {/*  /!*    <option value="website" defaultChecked>Website</option>*!/*/}
-                {/*  /!*    <option value="youtube">YouTube</option>*!/*/}
-                {/*  /!*  </select>*!/*/}
-                {/*  /!*</div>*!/*/}
-                {/*  /!*<div className="flex flex-col">*!/*/}
-                {/*  /!*  /!*<label htmlFor="query-restrictions" className="text-sm font-medium text-stone-600"></label>*!/*!/*/}
-
-                {/*  /!*  <select id="query-restrictions"*!/*/}
-                {/*  /!*          onChange={onOptionsChange}*!/*/}
-                {/*  /!*          disabled={disableOptions()}*!/*/}
-                {/*  /!*          className="mt-2 block w-full cursor-pointer rounded-md border border-gray-100 bg-gray-100 px-2 py-2 shadow-sm outline-none focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50">*!/*/}
-                {/*  /!*    <option value="full_website" defaultChecked>{category === "youtube" ? "" : "Full Website"}</option>*!/*/}
-                {/*  /!*    <option value="target_url">Target URL </option>*!/*/}
-                {/*  /!*  </select>*!/*/}
-                {/*  /!*</div>*!/*/}
-                {/*  <div className="flex flex-col">*/}
-                {/*    <div className="mt-2 grid w-full grid-cols-2 justify-end space-x-4 md:flex">*/}
-                {/*      /!*<button*!/*/}
-                {/*      /!*    className="rounded-lg bg-gray-200 px-4 py-2 font-medium text-gray-700 outline-none hover:opacity-80 focus:ring">Reset*!/*/}
-                {/*      /!*</button>*!/*/}
-                {/*      <button*/}
-                {/*          onClick={onSearch}*/}
-                {/*          className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white outline-none hover:opacity-80 focus:ring">Search*/}
-                {/*      </button>*/}
-                {/*    </div>*/}
-                {/*  </div>*/}
-                {/*</div>*/}
-
-                {/*<div className="mt-6 grid w-full grid-cols-2 justify-end space-x-4 md:flex">*/}
-                {/*  <button*/}
-                {/*      className="rounded-lg bg-gray-200 px-8 py-2 font-medium text-gray-700 outline-none hover:opacity-80 focus:ring">Reset*/}
-                {/*  </button>*/}
-                {/*  <button*/}
-                {/*      className="rounded-lg bg-blue-600 px-8 py-2 font-medium text-white outline-none hover:opacity-80 focus:ring">Search*/}
-                {/*  </button>*/}
-                {/*</div>*/}
               </div>
             </div>
           </div>
 
         </div>
-
-        {/*<section className="container px-4 mx-auto">*/}
           <div className="flex justify-center mx-auto max-w-full">
             {inProgress &&
                 <InfinitySpin
@@ -236,12 +194,11 @@ export default function SearchBox() {
                 />
             }
           </div>
-        {/*</section>*/}
 
         {maybeShowNoResultsFound ?
             <div className="flex justify-center mx-auto max-w-full">
               <span className="ml-2 text-sm tracking-wide">No results found</span>
-            </div> : <>{emails.length > 0 && <ListView emails={emails} isSearchResult={true}/>}</>
+            </div> : <>{whoIsResults.length > 0 && <ListView records={whoIsResults}/>}</>
         }
       </section>
   )

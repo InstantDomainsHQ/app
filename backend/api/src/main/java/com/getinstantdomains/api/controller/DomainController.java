@@ -2,6 +2,7 @@ package com.getinstantdomains.api.controller;
 
 import com.getinstantdomains.api.DomainApi;
 import com.getinstantdomains.api.GenerateRequest;
+import com.getinstantdomains.api.TldResponse;
 import com.getinstantdomains.api.service.domain.DomainService;
 import com.getinstantdomains.api.TaskId;
 import lombok.RequiredArgsConstructor;
@@ -22,5 +23,10 @@ public class DomainController implements DomainApi {
   @Override
   public ResponseEntity<TaskId> generateDomains(GenerateRequest generateRequest) {
     return ResponseEntity.ok(domainService.generateDomains(generateRequest));
+  }
+
+  @Override
+  public ResponseEntity<TldResponse> getTlds() {
+    return ResponseEntity.ok(domainService.getTlds());
   }
 }

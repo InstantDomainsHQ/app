@@ -111,6 +111,7 @@ public class SecurityFilter extends OncePerRequestFilter {
           user.setName(decodedToken.getName());
           user.setEmail(decodedToken.getEmail());
           user.setAvatar(decodedToken.getPicture());
+          user.setAnonymous(decodedToken.getEmail() == null);
           Map<String, Boolean> parsedClaims = new HashMap<>();
           final Map<String, Object> claimsToParse = decodedToken.getClaims();
           for (Map.Entry<String, Object> entry : claimsToParse.entrySet()) {

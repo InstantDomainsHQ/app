@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.getinstantdomains.api.DomainWhoIs;
 import com.getinstantdomains.api.GenerateRequest;
 import com.getinstantdomains.api.TaskId;
+import com.getinstantdomains.api.TldResponse;
 import com.getinstantdomains.api.WebsocketPayload;
 import com.getinstantdomains.api.data.postgres.entity.DomainEntity;
 import com.getinstantdomains.api.data.postgres.entity.TldEntity;
@@ -46,12 +47,20 @@ public class DomainServiceImpl implements DomainService {
   private final OkHttpClient httpClient = new OkHttpClient();
 
   @Override
+  public TldResponse getTlds() {
+    return new TldResponse()
+        .tlds(domainProps.getTlds()
+            .stream()
+            .toList());
+  }
+
+  @Override
   public TaskId generateDomains(GenerateRequest generateRequest) {
     if (!ObjectUtils.isEmpty(generateRequest.getQuery()) &&
         generateRequest.getQuery().split(" ").length > 1) {
       String taskId = "t_" + IDUtils.generateUid(IDUtils.SHORT_UID_LENGTH);
       gptService.gptCompletion(
-          generateRequest.getClientId(),
+          IDUtils.getSessionUser().getUserId(),
           openAiProps.getDomainGeneratePrompt(),
           generateRequest.getQuery(), this);
       return new TaskId().taskId(taskId);
@@ -71,13 +80,16 @@ public class DomainServiceImpl implements DomainService {
     final DomainEntity d = domainEntity;
     Thread.startVirtualThread(() -> sendDomainNameToClient(d, clientId));
 
-    final List<TldEntity> tlds = tldRepo.findAllByTld(domain, domainProps.getTlds().stream().toList());
+    final List<TldEntity> tlds = tldRepo.findAllByTld(domain, domainProps.getTlds());
 
     Thread.startVirtualThread(() -> sendTldsToClient(d, tlds, clientId));
 
     domainProps.getTlds().stream().forEach(it -> {
       Thread.startVirtualThread(() -> whois(d, it, clientId));
     });
+//    List.of(".com", ".org").stream().forEach(it -> {
+//      Thread.startVirtualThread(() -> whois(d, it, clientId));
+//    });
   }
 
   private void whois(DomainEntity domain, String tld, String clientId) {
@@ -121,7 +133,7 @@ public class DomainServiceImpl implements DomainService {
   }
 
   private WhoIsResponse callWhoisProxy(String domainName) {
-    String url = String.format("http://localhost:3000/api/v1/whois?domainName=%s", domainName);
+    String url = String.format("http://localhost:4000/api/v1/whois?domainName=%s", domainName);
     String responseBody = null;
     // Create a Request object with the specified URL
     Request request = new Request.Builder()

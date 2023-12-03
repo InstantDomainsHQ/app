@@ -18,6 +18,5 @@ public class SessionUser {
   private String username;
   private boolean anonymous;
   private boolean premiumUser;
-  private Long maxLeadLimit;
   private Map<String, Boolean> roles = new HashMap<>();
 }

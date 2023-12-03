@@ -1,8 +1,8 @@
-import {EmailSearchResults, LeadApi, TaskId} from "@/src/codegen";
+import {DomainApi, DomainWhoIs} from "@/src/codegen";
 import {getAuthToken, headerConfig} from "@/src/components/utils/headerConfig";
 import {User} from "firebase/auth";
 import {auth} from "@/src/components/utils/firebase-setup";
-import {NextRouter, useRouter} from "next/router";
+import {NextRouter} from "next/router";
 
 export const DEBUG = (...args: any[]) => {
   if (process.env.NODE_ENV !== "production") {
@@ -16,60 +16,28 @@ export const ERROR = (...args: any[]) => {
   }
 }
 
-// export const getExploreResult = async (pageOffset: number): Promise<ClientPageableResponse> => {
-//   try {
-//     const token = 'fh-anon-YmaGJfzBpgjWbgWiphfF7RfGNirNtQT7UJ2Ig5jB2SffW7'
-//     const response = await new ProjectApi(
-//         headerConfig(token))
-//     .getAllPublicFunctions({
-//       page_num: pageOffset,
-//       limit: PAGE_LIMIT
-//     })
-//     const result = response.data
-//     let prev = pageOffset - 1, next = pageOffset + 1
-//     if (result && result.numPages && result.numPages <= next) {
-//       next = pageOffset
-//     }
-//     if (prev < 1) {
-//       prev = 1
-//     }
-//     if (next == 1) {
-//       next++
-//     }
-//     return {
-//       results: result,
-//       prev: prev,
-//       next: next
-//     }
-//   } catch (e) {
-//     ERROR(e)
-//   }
-//   return { prev: 0, next: 0, results: {}}
-// }
-
-export const getSearchResults = async (query: string, authUser: User): Promise<TaskId> => {
+export const getSearchResults = async (query: string, authUser: User): Promise<DomainWhoIs> => {
   try {
-    // console.log("auth user: ", authUser)
     const token = await getAuthToken(authUser)
-    const response = await new LeadApi(
-        headerConfig(token))
-    .submitSearchQuery({
-      query: query,
-      webpage_only: false,
-      document_id: "hello world!"
-      // page_num: pageOffset,
-      // limit: PAGE_LIMIT
-    })
-    return response.data
+    const response = await new DomainApi(headerConfig(token))
+    .generateDomains({query: query})
+    return response.data as DomainWhoIs
   } catch (e) {
     ERROR(e)
   }
   return null
 }
 
-export const getAllContacts = async (authUser: User): Promise<EmailSearchResults> => {
-  const token = await getAuthToken(authUser)
-  return (await new LeadApi(headerConfig(token)).getAllUserLeads()).data
+export const getTlds = async (authUser: User): Promise<Array<string>> => {
+  try {
+    const token = await getAuthToken(authUser)
+    const response = await new DomainApi(headerConfig(token))
+    .getTlds()
+    return response.data as Array<string>
+  } catch (e) {
+    ERROR(e)
+  }
+  return null
 }
 
 export const logout = (router: NextRouter) => {

@@ -18,7 +18,7 @@ import { Configuration } from "./configuration";
 // @ts-ignore
 import globalAxios, { AxiosPromise, AxiosInstance } from 'axios';
 
-const basePath = process.env.NODE_ENV !== 'production' ? "http://localhost:6060" : "https://api.InstantDomains.net";
+const basePath = process.env.NODE_ENV !== 'production' ? "http://localhost:6868" : "https://api.getinstantdomains.com";
 export const BASE_PATH = basePath.replace(/\/+$/, "");
 
 /**
