@@ -6,7 +6,7 @@ services:
     hostname: "whois"
     restart: always
     environment:
-      - PROXY_HOST=
-      - PROXY_PORT=
+      - PROXY_HOST=82.165.209.112
+      - PROXY_PORT=1080
     ports:
       - "8181:8181"

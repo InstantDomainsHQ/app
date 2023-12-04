@@ -55,8 +55,8 @@ async function parseIrregularWhois(whoisResult, domain) {
 }
 
 async function whoisLookup(domain) {
-  var proxyIp = '82.165.209.112';
-  var proxyPort = 1080;
+  var proxyIp = process.env.PROXY_HOST;
+  var proxyPort = Number(process.env.PROXY_PORT);
 
   var options = {
     proxy: {

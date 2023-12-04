@@ -9,7 +9,9 @@ services:
       - "4000:4000"
     networks:
       - internal_net
-
+    environment:
+      - PROXY_HOST=82.165.209.112
+      - PROXY_PORT=1080
 networks:
   internal_net:
     external: true
