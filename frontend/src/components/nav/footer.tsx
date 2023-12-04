@@ -1,23 +1,8 @@
 import React from "react";
 
-import {useAuthContext} from "@/src/components/context/AuthContext";
-import {usePathname} from "next/navigation";
-
 export default function Footer() {
-  const {authUser} = useAuthContext()
-  const pathname = usePathname()
-
-  const showFooter = () => {
-    if (authUser || pathname.includes("/login")) return false
-    return true
-  }
-
-  if (!showFooter()) {
-    return <></>
-  }
-
   return (
-      <footer className="bg-blue-50 py-12 sm:py-16 lg:pt-20 xl:pt-24">
+      <footer className="py-12 sm:py-16 lg:pt-20 xl:pt-24 mt-40">
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-7">
             <div className="col-span-2 shrink-0 md:col-span-3">

@@ -6,7 +6,6 @@ import 'rsuite/dist/rsuite.min.css';
 import Header from "../components/nav/header";
 import Footer from "../components/nav/footer";
 import {AuthContextProvider} from "@/src/components/context/AuthContext";
-import RequireLogin from "@/src/components/utils/require-login";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -17,7 +16,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <script src="/assets/js/flowbite.js" />
       </Head>
         <Header/>
-        <RequireLogin><Component {...pageProps} /></RequireLogin>
+        <div className="h-screen">
+          <Component {...pageProps} />
+        </div>
         <Footer/>
       </AuthContextProvider>
   )

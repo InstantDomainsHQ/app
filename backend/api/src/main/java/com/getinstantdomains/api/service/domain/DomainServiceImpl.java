@@ -113,13 +113,15 @@ public class DomainServiceImpl implements DomainService {
     }
 
     // Update with the latest data and save
-    tldEntity.setRegisteredAt(getLocalDateTime(whoisResponse.getCreatedAt()));
-    tldEntity.setExpiresAt(getLocalDateTime(whoisResponse.getExpiresAt()));
-    tldEntity.setUpdatedAt(getLocalDateTime(whoisResponse.getUpdatedAt()));
-    try {
-      tldEntity.setStatus(objectMapper.writeValueAsString(whoisResponse.getDomainStatus()));
-    } catch (JsonProcessingException e) {
-      log.error(e.getLocalizedMessage());
+    if (whoisResponse != null) {
+      tldEntity.setRegisteredAt(getLocalDateTime(whoisResponse.getCreatedAt()));
+      tldEntity.setExpiresAt(getLocalDateTime(whoisResponse.getExpiresAt()));
+      tldEntity.setUpdatedAt(getLocalDateTime(whoisResponse.getUpdatedAt()));
+      try {
+        tldEntity.setStatus(objectMapper.writeValueAsString(whoisResponse.getDomainStatus()));
+      } catch (JsonProcessingException e) {
+        log.error(e.getLocalizedMessage());
+      }
     }
     tldRepo.save(tldEntity);
 
