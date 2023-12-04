@@ -14,6 +14,15 @@ app.use(morgan('dev'));
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
+app.use((err, req, res, next) => {
+  if (err.code === 'ECONNRESET') {
+    console.error('ECONNRESET error:', err);
+    res.status(500).send('Internal Server Error');
+  } else {
+    // For other types of errors, let the default Express error handler handle it
+    next(err);
+  }
+});
 
 app.get('/', (req, res) => {
   res.json({

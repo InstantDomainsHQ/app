@@ -65,12 +65,17 @@ async function whoisLookup(domain) {
       type: ProxyType.SOCKS5
     }
   };
-  var res = await whoisClient(domain, true, options);
-
+  let res = {}
+  try {
+    res = await whoisClient(domain, true, options);
+  } catch (e) {
+    console.log(e)
+  }
   console.debug(res);
   if (domain.endsWith(".co.uk") || domain.endsWith(".gg")) {
     return await parseIrregularWhois(res, domain)
   }
+  console.log("length: ", res["_raw"].length)
   if (res["parsedData"]) {
     return {
       domainName: res["parsedData"]["Domain Name"],
@@ -95,7 +100,6 @@ async function whoisLookup(domain) {
 }
 
 router.get('/', async (req, res) => {
-  console.log("req: ", req.query.domainName)
   res.json(await whoisLookup(req.query.domainName));
 });
 

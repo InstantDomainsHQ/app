@@ -52,6 +52,8 @@ public class DomainServiceImpl implements DomainService {
         .tlds(domainProps.getTlds()
             .stream()
             .toList());
+//    return new TldResponse()
+//        .tlds(List.of(".fyi", ".xyz", ".cc"));
   }
 
   @Override
@@ -87,7 +89,7 @@ public class DomainServiceImpl implements DomainService {
     domainProps.getTlds().stream().forEach(it -> {
       Thread.startVirtualThread(() -> whois(d, it, clientId));
     });
-//    List.of(".com", ".org").stream().forEach(it -> {
+//    List.of(".fyi", ".xyz", ".cc").stream().forEach(it -> {
 //      Thread.startVirtualThread(() -> whois(d, it, clientId));
 //    });
   }
@@ -157,7 +159,7 @@ public class DomainServiceImpl implements DomainService {
     }
     try {
       return objectMapper.readValue(responseBody, WhoIsResponse.class);
-    } catch (JsonProcessingException e) {
+    } catch (Exception e) {
       log.error(e.getLocalizedMessage());
     }
     return null;

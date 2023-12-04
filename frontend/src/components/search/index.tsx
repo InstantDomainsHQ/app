@@ -25,6 +25,10 @@ export default function SearchBox() {
     })
   }, [authUser])
 
+  useEffect(() => {
+    setWhoIsResults(loadPrevSearchResults())
+  }, []);
+
   const fetchTlds = () => {
     getTlds(authUser).then(result => {
       localStorage.setItem(STRINGS.TLDS, JSON.stringify(result))
@@ -63,7 +67,7 @@ export default function SearchBox() {
   }
 
   const saveSearchResults = (items: Array<WhoIsMap>): void => {
-    // console.log("saving items: ", items)
+    console.log("saving items: ", items)
     localStorage.setItem(STRINGS.SEARCH_RESULTS, JSON.stringify(items))
     setWhoIsResults(items)
   }
@@ -85,34 +89,26 @@ export default function SearchBox() {
   const handleNewSearchResults = (payload: DomainWhoIs) => {
     if (payload) {
       const oldList = loadPrevSearchResults()
-      // console.log("oldList: ", oldList)
+      console.log("oldList: ", oldList)
       const existingWhoIsList = oldList.filter(it => it.id === payload.id)
       if (existingWhoIsList && existingWhoIsList.length > 0) {
         const existing = existingWhoIsList[0]
-        // console.log(payload)
+        console.log(payload)
 
-        // console.log("existing: ", existing)
-        existing.tlds.set(payload.tld, {
-          tld: payload.tld,
-          is_available: payload.is_available,
-          expires_at: payload.expires_at,
-          registered_at: payload.registered_at
-        })
-
-      } else {
-        const tlds = new Map<string, TldInfo>()
+        console.log("existing: ", existing)
         if (payload.tld) {
-          tlds.set(payload.tld, {
+          existing.tlds[payload.tld] = {
             tld: payload.tld,
             is_available: payload.is_available,
             expires_at: payload.expires_at,
             registered_at: payload.registered_at
-          })
+          }
         }
+      } else {
         oldList.push({
           id: payload.id,
           domainName: payload.name,
-          tlds: tlds
+          tlds: {}
         })
         // console.log("old list about to save....: ", oldList)
       }
@@ -135,17 +131,17 @@ export default function SearchBox() {
     if (items) {
       const arr = JSON.parse(items) as Array<WhoIsMap>
       // console.log("arr: ", arr)
-      arr.forEach((it: WhoIsMap) => {
-        // console.log("it: ", new Map(Object.entries(it.tlds)))
-        // console.log(typeof it)
-        it.tlds = new Map(Object.entries(it.tlds))
-        // console.log("it: ", it)
-        // return {
-        //   id: it.id,
-        //   domainName: it.domainName,
-        //   tlds: it.tlds ? new Map<string, TldInfo>(it.tlds) : new Map<string, TldInfo>(),
-        // }
-      });
+      // arr.forEach((it: WhoIsMap) => {
+      //   // console.log("it: ", new Map(Object.entries(it.tlds)))
+      //   // console.log(typeof it)
+      //   it.tlds = new Map(Object.entries(it.tlds))
+      //   // console.log("it: ", it)
+      //   // return {
+      //   //   id: it.id,
+      //   //   domainName: it.domainName,
+      //   //   tlds: it.tlds ? new Map<string, TldInfo>(it.tlds) : new Map<string, TldInfo>(),
+      //   // }
+      // });
       return arr
     }
     return []

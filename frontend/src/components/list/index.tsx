@@ -17,7 +17,7 @@ export interface TldInfo {
 export interface WhoIsMap {
   id: string,
   domainName: string,
-  tlds: Map<string, TldInfo>
+  tlds: {}
 }
 
 const computeMaxPage = (length: undefined | number) => {
@@ -203,7 +203,7 @@ const ListView: FC<WhoIsResults> = (props) => {
   }
 
   const domainIsAvailable = (whois: WhoIsMap, tld: string) => {
-    if (whois.tlds.has(tld) && whois.tlds.get(tld).is_available) {
+    if (whois.tlds[tld] && whois.tlds[tld].is_available) {
       return (
           <div
               className="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
