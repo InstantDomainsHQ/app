@@ -69,13 +69,13 @@ async function whoisLookup(domain) {
   try {
     res = await whoisClient(domain, true, options);
   } catch (e) {
-    console.log(e)
+    console.error(e)
   }
-  console.debug(res);
+  // console.debug(res);
   if (domain.endsWith(".co.uk") || domain.endsWith(".gg")) {
     return await parseIrregularWhois(res, domain)
   }
-  console.log("length: ", res["_raw"].length)
+  console.log("domain: ", domain, " length: ", res["_raw"].length)
   if (res["parsedData"]) {
     return {
       domainName: res["parsedData"]["Domain Name"],

@@ -1,0 +1,17 @@
+version: "3.3"
+services:
+  id_whois:
+    image: 537408061242.dkr.ecr.us-east-2.amazonaws.com/instantdomains:whois
+#    build: .
+    container_name: id_whois
+    restart: always
+    ports:
+      - "4000:4000"
+    networks:
+      - internal_net
+
+networks:
+  internal_net:
+    external: true
+
+
