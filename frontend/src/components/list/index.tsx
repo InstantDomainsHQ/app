@@ -156,9 +156,8 @@ const ListView: FC<WhoIsResults> = (props) => {
           {/*<th scope="col"*/}
           {/*    className="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">*/}
           {/*</th>*/}
-          <th scope="col"
-              className="px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            Name
+          <th
+              className="sticky left-0 h-fit bg-white">
           </th>
           {
             tlds?.map(it => {
@@ -223,10 +222,8 @@ const ListView: FC<WhoIsResults> = (props) => {
     return (
         <tr key={whoIs.id}>
           {/*{getCheckBox(email.id)}*/}
-          <td className="px-4 py-4 text-sm font-medium">
-            <div>
-              <h6 className="font-medium text-gray-800 dark:text-white ">{getCleanString(whoIs.domainName)}</h6>
-            </div>
+          <td className="sticky left-0 h-fit bg-white text-gray-500 font-bold ">
+            {getCleanString(whoIs.domainName)}
           </td>
 
           {
@@ -292,16 +289,18 @@ const ListView: FC<WhoIsResults> = (props) => {
   return (
       <>
         {/*<SidePanel open={checked.size === 1} lead={currentlyCheckedItem()}/>*/}
-        <section className="container px-4 mx-auto mb-10">
-          <div className="sm:flex sm:items-center sm:justify-between">
-            <div>
+        <section>
+
+
+          {/*<div className="sm:flex sm:items-center sm:justify-between">*/}
+            {/*<div>*/}
               {/*<div className="flex items-center gap-x-3">*/}
               {/*  <h2 className="text-lg font-medium text-gray-800 dark:text-white">Found</h2>*/}
               {/*  <span*/}
               {/*      className="px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400">{props.emails?.length ? props.emails.length : 0} contacts</span>*/}
               {/*</div>*/}
 
-            </div>
+            {/*</div>*/}
 
             {/*<div className="flex items-center mt-4 gap-x-3">*/}
             {/*  {checked.size > 0 &&*/}
@@ -338,29 +337,29 @@ const ListView: FC<WhoIsResults> = (props) => {
             {/*  </button>*/}
 
             {/*</div>*/}
-          </div>
+          {/*</div>*/}
 
 
-          <div className="flex flex-col mt-6 mb-20">
-            <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-              <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                <div
-                    className="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+          {/*<div className="flex flex-col mt-6 mb-20">*/}
+            {/*<div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">*/}
+              {/*<div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">*/}
+                <div className="w-full overflow-x-scroll">
                   <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead className="bg-gray-50 dark:bg-gray-800">
+                    <thead>
                     {getHeaders()}
                     </thead>
                     <tbody
-                        className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+                        // className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900"
+                    >
                     {records.map(it => {
                       return getRow(it)
                     })}
                     </tbody>
                   </table>
                 </div>
-              </div>
-            </div>
-          </div>
+              {/*</div>*/}
+            {/*</div>*/}
+          {/*</div>*/}
 
           {/*<div className="mt-6 sm:flex sm:items-center sm:justify-between ">*/}
           {/*  <div className="text-sm text-gray-500 dark:text-gray-400">*/}

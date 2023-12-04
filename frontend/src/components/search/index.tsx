@@ -184,8 +184,8 @@ export default function SearchBox() {
                         <div className="absolute top-4 left-3">
                           <i className="fa fa-search text-gray-400 z-20 hover:text-gray-500"></i>
                         </div>
-                        <input type="text" className="px-6 py-6 w-full rounded-3xl border border-gray-100 bg-gray-100 shadow-sm outline-none focus:border-blue-500 text-2xl font-bold" placeholder="Search anything..."/>
-                          <div className="absolute top-2 right-2 px-6 py-2">
+                        <input type="text" className="px-6 py-6 w-full rounded-3xl border border-gray-100 bg-gray-100 shadow-sm outline-none focus:border-blue-500 text-2xl font-bold" placeholder="Describe your product or enter keywords"/>
+                          <div className="absolute top-2 right-2 px-6 py-3">
 
                             <button className="bg-blue-700 hover:bg-blue-900 text-white text-lg font-bold py-2 px-4 rounded-full">Generate</button>
 
