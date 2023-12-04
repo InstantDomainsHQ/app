@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <script src="/assets/js/flowbite.js" />
       </Head>
         <Header/>
-        <div className="h-screen">
+        <div className="h-[100v]">
           <Component {...pageProps} />
         </div>
         <Footer/>

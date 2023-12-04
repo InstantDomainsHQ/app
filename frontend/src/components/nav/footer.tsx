@@ -10,12 +10,6 @@ export default function Footer() {
                  href="/"><img className="h-8 w-auto" src="https://sitegpt.ai/images/logo-full.svg" alt=""/></a>
               <p className="text-base font-normal text-gray-900 mt-6">Instantly answer your
                 visitors' questions with a personalized chatbot trained on your website content.</p>
-              {/*<div*/}
-              {/*    className="inline-flex items-center justify-center transition-all duration-150 mt-6 hover:-translate-y-1 hover:shadow-md lg:justify-start">*/}
-              {/*  <img className="h-12 w-auto"*/}
-              {/*       src="https://api.producthunt.com/widgets/embed-image/v1/top-post-badge.svg?post_id=387564&amp;theme=light&amp;period=daily"*/}
-              {/*       alt="SiteGPT - ChatGPT for every website | Product Hunt"/>*/}
-              {/*</div>*/}
               <div>
                 <div
                     className="inline-flex items-center gap-2 text-base font-medium text-blue-600 mt-6 hover:underline">
