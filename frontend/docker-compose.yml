@@ -1,0 +1,19 @@
+version: "3.3"
+services:
+  frontend:
+    image: 537408061242.dkr.ecr.us-east-2.amazonaws.com/instantdomains:frontend
+    container_name: frontend
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`getinstantdomains.com`)"
+      - "traefik.http.routers.frontend.service=frontend"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+    networks:
+      - internal_net
+
+networks:
+  internal_net:
+    external: true
+
+
