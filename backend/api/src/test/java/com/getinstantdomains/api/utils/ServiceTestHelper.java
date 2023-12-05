@@ -36,7 +36,6 @@ public class ServiceTestHelper {
         user.setEmail("testuser@exampe.com");
         user.setApiKey("fh-" + IDUtils.generateUid(IDUtils.API_KEY_LENGTH));
         user.setUserId(userId == null ? UUID.randomUUID().toString() : userId);
-        user.setMaxLeadLimit(10L);
         Mockito.when(authentication.getPrincipal()).thenReturn(user);
 
         SecurityContext securityContext = Mockito.mock(SecurityContext.class);
