@@ -1,16 +1,16 @@
 version: "3.3"
 services:
   api:
-    image: 537408061242.dkr.ecr.us-east-2.amazonaws.com/InstantDomains:api
+    image: 537408061242.dkr.ecr.us-east-2.amazonaws.com/instantdomains:api
     container_name: api
     restart: always
     ports:
-      - '9090:9090'
+      - '6868:6868'
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.InstantDomains_backend.rule=Host(`api.InstantDomains.net`)"
-      - "traefik.http.routers.InstantDomains_backend.service=InstantDomains_backend"
-      - "traefik.http.services.InstantDomains_backend.loadbalancer.server.port=9090"
+      - "traefik.http.routers.instantdomains_api.rule=Host(`api.getinstantdomains.com`)"
+      - "traefik.http.routers.instantdomains_api.service=instantdomains_api"
+      - "traefik.http.services.instantdomains_api.loadbalancer.server.port=6868"
     networks:
       - internal_net
     volumes:
