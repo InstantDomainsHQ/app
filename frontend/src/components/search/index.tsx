@@ -145,7 +145,7 @@ export default function SearchBox() {
                           <div className="absolute top-2 right-2 px-6 py-3">
                             <button
                                 onClick={onSearch}
-                                className="bg-blue-700 hover:bg-blue-900 text-white text-lg font-bold py-2 px-4 rounded-full">Generate</button>
+                                className="bg-blue-700 hover:bg-blue-900 text-white text-lg font-bold py-2 px-4 rounded-full sm:text-sm">Generate</button>
                           </div>
                       </div>
                 </div>

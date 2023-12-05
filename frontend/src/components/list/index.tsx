@@ -83,7 +83,6 @@ const ListView: FC<WhoIsResults> = (props) => {
   }
 
   const domainIsAvailable = (whois: WhoIsMap, tld: string) => {
-    if (whois.domainName === "refreshdrop" && tld === ".org") return STRINGS.UNKNOWN
     if (whois.tlds[tld]) {
       if (whois.tlds[tld].is_available) {
         return STRINGS.AVAILABLE

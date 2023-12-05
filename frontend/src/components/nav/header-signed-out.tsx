@@ -1,14 +1,12 @@
 import React from "react";
+import Logo from "@/src/components/nav/Logo";
 export default function HeaderSignedOut() {
   return (
       <header
           className="sticky z-50 bg-white/90 backdrop-blur-lg inset-x-0 top-0 border-b border-gray-100 py-3">
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            <div className="shrink-0"><a aria-current="page"
-                                         className="isomorphic-link isomorphic-link--internal flex items-center"
-                                         href="/"><img className="h-6 w-auto md:h-7"
-                                                       src="https://sitegpt.ai/images/logo-full.svg" alt=""/></a></div>
+            <Logo/>
             <div className="hidden items-center justify-center gap-4 lg:flex">
 
               {/*<a*/}

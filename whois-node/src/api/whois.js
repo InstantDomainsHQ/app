@@ -55,16 +55,24 @@ async function parseIrregularWhois(whoisResult, domain) {
 }
 
 async function whoisLookup(domain) {
-  var proxyIp = process.env.PROXY_HOST;
-  var proxyPort = Number(process.env.PROXY_PORT);
+  let proxyIp, proxyPort;
 
-  var options = {
-    proxy: {
-      ip: proxyIp,
-      port: proxyPort,
-      type: ProxyType.SOCKS5
-    }
-  };
+  if (process.env.PROXY_HOST && process.env.PROXY_PORT) {
+    proxyIp = process.env.PROXY_HOST;
+    proxyPort = Number(process.env.PROXY_PORT);
+  }
+
+  let options = {};
+  if (proxyIp && proxyPort) {
+    options = {
+      proxy: {
+        ip: proxyIp,
+        port: proxyPort,
+        type: ProxyType.SOCKS5
+      }
+    };
+  }
+
   let res = {}
   try {
     res = await whoisClient(domain, true, options);

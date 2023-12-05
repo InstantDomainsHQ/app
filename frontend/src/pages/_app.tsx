@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
       <AuthContextProvider>
       <Head>
-        <title>NextJS TailwindCSS TypeScript Starter</title>
+        <title>Instant Domains</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <script src="/assets/js/flowbite.js" />
       </Head>

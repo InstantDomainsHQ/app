@@ -29,7 +29,7 @@ export default function Home() {
             <div className="max-w-xl mx-auto text-center lg:max-w-4xl">
               <p className="font-display text-4xl sm:text-6xl lg:text-6xl font-bold tracking-tight text-gray-900 leading-normal">Generate domains <span
                   className="text-blue-600">instantly</span></p>
-              <p className="max-w-3xl text-base font-normal text-gray-700 mx-auto mt-5 sm:text-lg lg:text-xl leading-normal">Discover the perfect domain for any use case. Powered by AI.</p>
+              <p className="max-w-3xl text-base font-normal text-gray-700 mx-auto mt-5 sm:text-lg lg:text-xl leading-normal">Discover the perfect domain for any use case.</p>
             </div>
 
             <div
