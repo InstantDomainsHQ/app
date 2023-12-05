@@ -60,8 +60,8 @@ jobs:
         run: |
           cd ${{ env.PROJECT_ROOT }}
           ./gradlew :${{ env.PROJECT_NAME }}:build \
-          -DMR_GH_TOKEN=${{ env.MR_GH_TOKEN }} \
-          -DMR_GH_USERNAME=${{ env.MR_GH_USERNAME }} \
+          -DGH_TOKEN=${{ env.GH_TOKEN }} \
+          -DGH_USERNAME=${{ env.GH_USERNAME }} \
           -DSPRING_APPLICATION_NAME=${{ env.SPRING_APPLICATION_NAME }} \
           -DSPRING_PROFILES_ACTIVE=${{ env.TEST_SPRING_PROFILES_ACTIVE }} --info
 
