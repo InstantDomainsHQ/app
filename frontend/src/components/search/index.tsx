@@ -47,7 +47,7 @@ export default function SearchBox() {
   useEffect(() => {
     // REACT_APP_WS_URL=http://localhost:8080/ws
     document.cookie = `Authorization=${authToken}`
-    const wsStompUrl = `http:/localhost:6868/ws`
+    const wsStompUrl = `http:/localhost:9090/ws`
     const sock = new SockJS(wsStompUrl)
     try {
       const client = Stomp.Stomp.over(() => sock);

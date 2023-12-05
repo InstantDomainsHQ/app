@@ -5,12 +5,12 @@ services:
     container_name: api
     restart: always
     ports:
-      - '6868:6868'
+      - '9090:9090'
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.instantdomains_api.rule=Host(`api.getinstantdomains.com`)"
       - "traefik.http.routers.instantdomains_api.service=instantdomains_api"
-      - "traefik.http.services.instantdomains_api.loadbalancer.server.port=6868"
+      - "traefik.http.services.instantdomains_api.loadbalancer.server.port=9090"
     networks:
       - internal_net
     volumes:
