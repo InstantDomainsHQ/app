@@ -63,6 +63,24 @@ export interface DomainWhoIs {
      * @memberof DomainWhoIs
      */
     registered_at?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof DomainWhoIs
+     */
+    whois_url?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DomainWhoIs
+     */
+    price?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof DomainWhoIs
+     */
+    affiliate_link?: string;
 }
 /**
  * 

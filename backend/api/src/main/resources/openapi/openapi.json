@@ -169,6 +169,9 @@
           },
           "price": {
             "type": "string"
+          },
+          "affiliate_link": {
+            "type": "string"
           }
         }
       },

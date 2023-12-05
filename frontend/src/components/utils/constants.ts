@@ -2,5 +2,8 @@ export const SITE_IMAGE_URL = 'https://d229njkjc1dgnt.cloudfront.net/image/kalic
 export const STRINGS = {
   MAX_PAGE_SIZE: 25,
   SEARCH_RESULTS: "searchResults",
-  TLDS: "tlds"
+  TLDS: "tlds",
+  AVAILABLE: "available",
+  NOT_AVAILABLE: "not_available",
+  UNKNOWN: "unknown"
 }

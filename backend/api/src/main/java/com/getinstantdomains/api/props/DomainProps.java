@@ -1,6 +1,7 @@
 package com.getinstantdomains.api.props;
 
-import com.getinstantdomains.api.dto.TldPropDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.getinstantdomains.api.dto.TldDto;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -17,13 +18,15 @@ import org.springframework.context.annotation.Primary;
 @Configuration
 @ConfigurationProperties(prefix = "domains")
 public class DomainProps {
+  private List<TldDto> tlds = new ArrayList<>();
   private String whoisBaseUrl;
-  private List<TldPropDto> tlds = new ArrayList<>();
+  private String affiliateBaseUrl;
 
+  @JsonIgnore
   public List<String> getTldExtensions() {
     return tlds
         .stream()
-        .map(TldPropDto::getTld)
+        .map(TldDto::getTld)
         .toList();
   }
 }

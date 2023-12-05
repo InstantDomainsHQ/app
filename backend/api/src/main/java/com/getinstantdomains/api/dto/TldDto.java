@@ -7,7 +7,7 @@ import lombok.Setter;
  * @author Biz Melesse created on 12/4/23
  */
 @Getter @Setter
-public class TldPropDto {
+public class TldDto {
   private String tld;
   private String price;
 }

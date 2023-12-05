@@ -82,25 +82,31 @@ export default function SearchBox() {
       clearSearchResults()
       setInProgress(true)
       getSearchResults(value, authUser).then(res => {});
+      const timer = setTimeout(() => {
+        setInProgress(false)
+      }, 10000);
     }
   }
 
   const handleNewSearchResults = (payload: DomainWhoIs) => {
     if (payload) {
       const oldList = loadPrevSearchResults()
-      console.log("oldList: ", oldList)
+      // console.log("oldList: ", oldList)
       const existingWhoIsList = oldList.filter(it => it.id === payload.id)
       if (existingWhoIsList && existingWhoIsList.length > 0) {
         const existing = existingWhoIsList[0]
         console.log(payload)
 
-        console.log("existing: ", existing)
+        console.log("Received:: ", payload)
         if (payload.tld) {
           existing.tlds[payload.tld] = {
             tld: payload.tld,
             is_available: payload.is_available,
             expires_at: payload.expires_at,
-            registered_at: payload.registered_at
+            registered_at: payload.registered_at,
+            price: payload.price,
+            whois_url: payload.whois_url,
+            affiliate_link: payload.affiliate_link
           }
         }
       } else {
@@ -117,20 +123,7 @@ export default function SearchBox() {
   const loadPrevSearchResults = (): Array<WhoIsMap> => {
     const items = localStorage.getItem(STRINGS.SEARCH_RESULTS)
     if (items) {
-      const arr = JSON.parse(items) as Array<WhoIsMap>
-      // console.log("arr: ", arr)
-      // arr.forEach((it: WhoIsMap) => {
-      //   // console.log("it: ", new Map(Object.entries(it.tlds)))
-      //   // console.log(typeof it)
-      //   it.tlds = new Map(Object.entries(it.tlds))
-      //   // console.log("it: ", it)
-      //   // return {
-      //   //   id: it.id,
-      //   //   domainName: it.domainName,
-      //   //   tlds: it.tlds ? new Map<string, TldInfo>(it.tlds) : new Map<string, TldInfo>(),
-      //   // }
-      // });
-      return arr
+      return JSON.parse(items) as Array<WhoIsMap>
     }
     return []
   }
