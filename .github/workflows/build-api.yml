@@ -25,7 +25,7 @@ env:
   TEST_SPRING_PROFILES_ACTIVE: 'test'
   TEST_DB_NAME: 'iddb'
   TEST_DB_PASSWORD: 'root'
-  TEST_DB_USERNAME: 'rqQoF792aMFAAftP9nse'
+  TEST_DB_USERNAME: 'root'
   ARTIFACT_PATH: 'api/build'
 jobs:
   test:
