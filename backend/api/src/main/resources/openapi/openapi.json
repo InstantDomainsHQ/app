@@ -163,6 +163,12 @@
           "registered_at": {
             "type": "integer",
             "format": "int64"
+          },
+          "whois_url": {
+            "type": "string"
+          },
+          "price": {
+            "type": "string"
           }
         }
       },

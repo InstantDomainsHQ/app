@@ -11,6 +11,7 @@ import com.getinstantdomains.api.data.postgres.entity.DomainEntity;
 import com.getinstantdomains.api.data.postgres.entity.TldEntity;
 import com.getinstantdomains.api.data.postgres.repo.DomainRepo;
 import com.getinstantdomains.api.data.postgres.repo.TldRepo;
+import com.getinstantdomains.api.dto.TldPropDto;
 import com.getinstantdomains.api.dto.WhoIsResponse;
 import com.getinstantdomains.api.props.DomainProps;
 import com.getinstantdomains.api.props.OpenAiProps;
@@ -49,11 +50,7 @@ public class DomainServiceImpl implements DomainService {
   @Override
   public TldResponse getTlds() {
     return new TldResponse()
-        .tlds(domainProps.getTlds()
-            .stream()
-            .toList());
-//    return new TldResponse()
-//        .tlds(List.of(".fyi", ".xyz", ".cc"));
+        .tlds(domainProps.getTldExtensions());
   }
 
   @Override
@@ -82,9 +79,9 @@ public class DomainServiceImpl implements DomainService {
     final DomainEntity d = domainEntity;
     Thread.startVirtualThread(() -> sendDomainNameToClient(d, clientId));
 
-    final List<TldEntity> tlds = tldRepo.findAllByTld(domain, domainProps.getTlds());
+    final List<TldEntity> tlds = tldRepo.findAllByTld(domain, domainProps.getTldExtensions());
 
-    Thread.startVirtualThread(() -> sendTldsToClient(d, tlds, clientId));
+    Thread.startVirtualThread(() -> sendTldsToClient(d, tlds, clientId, tld.getPrice()));
 
     domainProps.getTlds().stream().forEach(it -> {
       Thread.startVirtualThread(() -> whois(d, it, clientId));
@@ -94,21 +91,22 @@ public class DomainServiceImpl implements DomainService {
 //    });
   }
 
-  private void whois(DomainEntity domain, String tld, String clientId) {
-    String fullDomain = domain.getDomainName() + tld;
+  private void whois(DomainEntity domain, TldPropDto tld, String clientId) {
+    String fullDomain = domain.getDomainName() + tld.getTld();
 
     // Do whois lookup here
     WhoIsResponse whoisResponse = callWhoisProxy(fullDomain);
 
 
     // Update any existing record
-    List<TldEntity> tldEntities = tldRepo.findAllByTld(domain.getDomainName(), List.of(tld));
+    List<TldEntity> tldEntities = tldRepo.findAllByTld(domain.getDomainName(),
+        List.of(tld.getTld()));
     TldEntity tldEntity = null;
     if (!ObjectUtils.isEmpty(tldEntities)) {
       tldEntity = tldEntities.get(0);
     } else {
       tldEntity = new TldEntity();
-      tldEntity.setTld(tld);
+      tldEntity.setTld(tld.getTld());
       tldEntity.setDomainId(domain.getId());
     }
 
@@ -126,7 +124,7 @@ public class DomainServiceImpl implements DomainService {
     tldRepo.save(tldEntity);
 
     // Send to client
-    sendTldsToClient(domain, List.of(tldEntity), clientId);
+    sendTldsToClient(domain, List.of(tldEntity), clientId, tld.getPrice());
   }
 
   private LocalDateTime getLocalDateTime(Long value) {
@@ -167,17 +165,24 @@ public class DomainServiceImpl implements DomainService {
     return null;
   }
 
-  private void sendTldsToClient(DomainEntity domainEntity, List<TldEntity> tlds, String clientId) {
+  private void sendTldsToClient(DomainEntity domainEntity, List<TldEntity> tlds, String clientId,
+      String price) {
     for (TldEntity tld : tlds) {
       sendToClient(new DomainWhoIs()
               .name(domainEntity.getDomainName())
               .id(domainEntity.getId())
               .tld(tld.getTld())
+              .price(price)
+              .whoisUrl(buildWhoIsUrl(domainEntity.getDomainName(), tld.getTld()))
               .isAvailable(domainIsAvailable(tld))
               .expiresAt(getTimestamp(tld.getExpiresAt()))
               .registeredAt(getTimestamp(tld.getRegisteredAt())),
           clientId);
     }
+  }
+
+  private String buildWhoIsUrl(String domainName, String tld) {
+    return String.format("%s%s/%s", domainProps.getWhoisBaseUrl(), domainName, tld);
   }
 
   private Long getTimestamp(LocalDateTime time) {
