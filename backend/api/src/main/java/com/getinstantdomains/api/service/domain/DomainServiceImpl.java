@@ -87,9 +87,6 @@ public class DomainServiceImpl implements DomainService {
     domainProps.getTlds().stream().forEach(it -> {
       Thread.startVirtualThread(() -> whois(d, it, clientId));
     });
-//    List.of(".fyi", ".xyz", ".cc").stream().forEach(it -> {
-//      Thread.startVirtualThread(() -> whois(d, it, clientId));
-//    });
   }
 
   private void whois(DomainEntity domain, TldDto tld, String clientId) {
