@@ -1,9 +1,8 @@
 package com.getinstantdomains.api.data;
 
 
-import com.getinstantdomains.api.props.PropConfiguration;
 import com.getinstantdomains.api.data.postgres.PostgresDBDataConfiguration;
-import com.getinstantdomains.api.data.redis.RedisConfiguration;
+import com.getinstantdomains.api.props.PropConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
@@ -22,7 +21,7 @@ import org.springframework.context.annotation.Import;
 })
 @Import({
     PostgresDBDataConfiguration.class,
-    RedisConfiguration.class,
+//    RedisConfiguration.class,
     PropConfiguration.class
 })
 public class DataConfiguration {
