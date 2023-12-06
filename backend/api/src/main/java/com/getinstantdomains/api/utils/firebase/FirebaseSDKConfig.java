@@ -58,6 +58,6 @@ public class FirebaseSDKConfig {
     }
 
     private String decodeKey(String encoded) {
-        return new String(Base64.getDecoder().decode(encoded), StandardCharsets.UTF_8);
+        return new String(Base64.getDecoder().decode(encoded), StandardCharsets.UTF_8).replace("\\n", "\n");
     }
 }

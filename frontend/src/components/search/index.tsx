@@ -6,6 +6,7 @@ import SockJS from 'sockjs-client';
 import ListView, { WhoIsMap} from "@/src/components/list";
 import {STRINGS} from "@/src/components/utils/constants";
 import {DomainWhoIs, WebsocketPayload} from "@/src/codegen";
+import { BASE_PATH } from "@/src/codegen/base";
 import { InfinitySpin } from  'react-loader-spinner'
 import {getAuthToken} from "@/src/components/utils/headerConfig";
 
@@ -45,11 +46,8 @@ export default function SearchBox() {
   };
 
   useEffect(() => {
-    // REACT_APP_WS_URL=http://localhost:8080/ws
     document.cookie = `Authorization=${authToken}`
-    // const wsStompUrl = `http:/localhost:9090/ws`
-    const wsStompUrl = `https:/api.getinstantdomains.com/ws`
-    const sock = new SockJS(wsStompUrl)
+    const sock = new SockJS(BASE_PATH + "/ws")
     try {
       const client = Stomp.Stomp.over(() => sock);
       client.debug = () => {}

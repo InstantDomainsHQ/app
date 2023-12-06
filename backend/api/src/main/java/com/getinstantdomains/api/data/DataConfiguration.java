@@ -21,7 +21,6 @@ import org.springframework.context.annotation.Import;
 })
 @Import({
     PostgresDBDataConfiguration.class,
-//    RedisConfiguration.class,
     PropConfiguration.class
 })
 public class DataConfiguration {

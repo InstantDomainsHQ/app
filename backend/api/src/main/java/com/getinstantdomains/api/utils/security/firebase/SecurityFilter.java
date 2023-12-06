@@ -95,7 +95,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         return;
       }
       user = firebaseTokenToUser(decodedToken);
-      user.setAnonymous(false);
+      user.setAnonymous(true);
       credentials.setAuthToken(bearerToken);
       credentials.setDecodedFirebaseToken(decodedToken);
       UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, credentials,

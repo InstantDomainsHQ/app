@@ -14,7 +14,6 @@ dependencies {
     implementation 'org.springframework:spring-websocket'
     implementation 'org.springframework:spring-messaging'
     implementation 'org.java-websocket:Java-WebSocket'
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.jobrunr:jobrunr-spring-boot-3-starter'
     implementation 'org.hibernate:hibernate-core'
     implementation 'org.apache.httpcomponents:fluent-hc'
