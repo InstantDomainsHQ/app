@@ -25,7 +25,7 @@ export default function Home() {
       <main>
         <section
             className="py-6 sm:py-16 lg:py-10 xl:py-24">
-          <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 sm:pt-20 pt-14">
+          <div className="max-w-screen-4xl mx-auto px-4 sm:px-6 lg:px-8 sm:pt-20 pt-14">
             <div className="max-w-xl mx-auto text-center lg:max-w-4xl">
               <p className="font-display text-4xl sm:text-6xl lg:text-6xl font-bold tracking-tight text-gray-900 leading-normal">Generate domains <span
                   className="text-blue-600">instantly</span></p>

@@ -154,9 +154,9 @@ const ListView: FC<WhoIsResults> = (props) => {
 
   return (
       <>
-        <section>
+        <section className="max-w-full">
                 <div className="w-full overflow-x-scroll">
-                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                  <table className="max-w-full divide-y divide-gray-200 dark:divide-gray-700">
                     <thead>
                     {getHeaders()}
                     </thead>
