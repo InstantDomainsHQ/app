@@ -1,21 +1,19 @@
 import { Html, Head, Main, NextScript } from 'next/document';
-import Script from "next/script";
 import {STRINGS} from "../components/utils/constants";
 
 export default function Document() {
-  const title = 'Kalico AI | Audio and Video Repurposing for Content Creators'
-  const description = 'Kalico is an AI assistant that helps you instantly create captivating articles from your videos and podcasts.'
+  const title = 'Instant Domains | Domain Name Generator'
+  const description = 'Quickly discover your perfect domain name. Describe your idea, generate, and check availability instantly.'
   const siteImage = STRINGS.SITE_IMAGE
-  const url = 'https://kalico.ai'
+  const url = 'https://getinstantdomains.com'
       return (
       <Html lang="en">
         <Head>
           <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico" />
           <link rel='shortcut icon' href='/favicon.ico' />
-          {/*<link rel="manifest" href="/manifest.json" />*/}
           <meta
             name="description"
-            content="Kalico"
+            content="InstantDomains"
           />
           <meta
             name="title"

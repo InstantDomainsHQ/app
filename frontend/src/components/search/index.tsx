@@ -140,11 +140,11 @@ export default function SearchBox() {
                         </div>
                         <input
                             onChange={onChange}
-                            type="text" className="px-6 py-6 w-full rounded-3xl border border-gray-100 bg-gray-100 shadow-sm outline-none focus:border-blue-500 text-sm sm:text-2xl font-bold" placeholder="Describe your product or enter keywords"/>
-                          <div className="absolute top-4 sm:top-2 right-2 sm:px-6 sm:py-3 px-3 py-1">
+                            type="text" className="px-6 py-6 w-full rounded-3xl border border-gray-100 bg-gray-100 shadow-sm outline-none focus:border-blue-500 text-sm sm:text-2xl font-bold" placeholder="Describe your product"/>
+                          <div className="absolute top-4 sm:top-2 right-2 sm:px-6 px-3 py-1">
                             <button
                                 onClick={onSearch}
-                                className="bg-blue-700 hover:bg-blue-900 text-white text-xs font-bold sm:py-2 sm:px-4 py-2 px-2 rounded-full sm:text-lg">Generate</button>
+                                className="bg-blue-700 hover:bg-blue-900 text-white text-xs font-bold sm:px-4 py-2 px-2 rounded-full sm:text-lg">Generate</button>
                           </div>
                       </div>
                 </div>

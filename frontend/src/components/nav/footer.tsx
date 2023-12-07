@@ -8,7 +8,7 @@ export default function Footer() {
           <div className="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-7">
             <div className="col-span-2 shrink-0 md:col-span-3">
               <Logo/>
-              <p className="text-base font-normal text-gray-900 mt-6">Effortlessly find the ideal domain for any purpose with our fast and user-friendly domain name generator</p>
+              <p className="text-base font-normal text-gray-900 mt-6">Effortlessly find the ideal domain for any purpose with our fast and user-friendly domain name generator.</p>
               <div>
                 <div
                     className="inline-flex items-center gap-2 text-base font-medium text-blue-600 mt-6 hover:no-underline">
@@ -21,25 +21,28 @@ export default function Footer() {
                 </div>
               </div>
             </div>
-            {/*<div className="md:col-span-2">*/}
-            {/*  <p className="text-sm font-semibold text-blue-600">Company</p>*/}
-            {/*  <ul className="mt-6 space-y-4">*/}
-            {/*    <li><a*/}
-            {/*        className="isomorphic-link isomorphic-link--internal inline-flex text-base font-medium text-gray-900 transition-all duration-150 hover:translate-x-1 hover:text-gray-700"*/}
-            {/*        href="/terms">FAQ</a></li>*/}
-            {/*    <li><a*/}
-            {/*        className="isomorphic-link isomorphic-link--internal inline-flex text-base font-medium text-gray-900 transition-all duration-150 hover:translate-x-1 hover:text-gray-700"*/}
-            {/*        href="/terms">About Us</a></li>*/}
-            {/*  </ul>*/}
-            {/*</div>*/}
-            {/*<div className="md:col-span-2">*/}
-            {/*  <p className="text-sm font-semibold text-blue-600">Legal</p>*/}
-            {/*  <ul className="mt-6 space-y-4">*/}
-            {/*    <li><a*/}
-            {/*        className="isomorphic-link isomorphic-link--internal inline-flex text-base font-medium text-gray-900 transition-all duration-150 hover:translate-x-1 hover:text-gray-700"*/}
-            {/*        href="/terms">Terms &amp; Conditions</a></li>*/}
-            {/*  </ul>*/}
-            {/*</div>*/}
+            <div className="md:col-span-2">
+              <p className="text-sm font-semibold text-blue-600">Learn More</p>
+              <ul className="mt-6 space-y-4">
+                <li><a
+                    className="hover:no-underline isomorphic-link isomorphic-link--internal inline-flex text-base font-medium text-gray-900 transition-all duration-150 hover:translate-x-1 hover:text-gray-700"
+                    href="/about">About Us</a></li>
+                {/*<li><a*/}
+                {/*    className="hover:no-underline isomorphic-link isomorphic-link--internal inline-flex text-base font-medium text-gray-900 transition-all duration-150 hover:translate-x-1 hover:text-gray-700"*/}
+                {/*    href="/faq">FAQ</a></li>*/}
+              </ul>
+            </div>
+            <div className="md:col-span-2">
+              <p className="text-sm font-semibold text-blue-600">Legal</p>
+              <ul className="mt-6 space-y-4">
+                <li><a
+                    className="hover:no-underline  isomorphic-link isomorphic-link--internal inline-flex text-base font-medium text-gray-900 transition-all duration-150 hover:translate-x-1 hover:text-gray-700"
+                    href="/terms">Terms</a></li>
+                <li><a
+                    className="hover:no-underline isomorphic-link isomorphic-link--internal inline-flex text-base font-medium text-gray-900 transition-all duration-150 hover:translate-x-1 hover:text-gray-700"
+                    href="/privacy">Privacy</a></li>
+              </ul>
+            </div>
           </div>
           <div
               className="flex flex-col items-center gap-4 mt-12 sm:mt-16 md:flex-row md:justify-between">

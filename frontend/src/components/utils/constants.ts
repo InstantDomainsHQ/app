@@ -5,5 +5,5 @@ export const STRINGS = {
   AVAILABLE: "available",
   NOT_AVAILABLE: "not_available",
   UNKNOWN: "unknown",
-  SITE_IMAGE: 'https://d229njkjc1dgnt.cloudfront.net/image/kalico/site_image2.png'
+  SITE_IMAGE: 'https://d1x2gijf3bj73j.cloudfront.net/instant-domains/instant-domains.png'
 }
