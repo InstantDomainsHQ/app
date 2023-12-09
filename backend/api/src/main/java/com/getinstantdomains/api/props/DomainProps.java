@@ -21,6 +21,7 @@ public class DomainProps {
   private List<TldDto> tlds = new ArrayList<>();
   private String whoisBaseUrl;
   private String affiliateBaseUrl;
+  private String whoisNodeUrl;
 
   @JsonIgnore
   public List<String> getTldExtensions() {

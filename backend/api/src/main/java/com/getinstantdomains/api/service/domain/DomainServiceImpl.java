@@ -133,7 +133,7 @@ public class DomainServiceImpl implements DomainService {
   }
 
   private WhoIsResponse callWhoisProxy(String domainName) {
-    String url = String.format("http://localhost:4000/api/v1/whois?domainName=%s", domainName);
+    String url = String.format(domainProps.getWhoisNodeUrl(), domainName);
     String responseBody = null;
     // Create a Request object with the specified URL
     Request request = new Request.Builder()
