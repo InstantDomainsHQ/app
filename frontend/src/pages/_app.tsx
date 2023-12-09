@@ -13,6 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>Instant Domains</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name='impact-site-verification' content='118b324c-d517-451f-9d6e-cb4b3e64b49e'/>
         <script src="/assets/js/flowbite.js" />
       </Head>
         <Header/>
