@@ -2,7 +2,7 @@ import { Html, Head, Main, NextScript } from 'next/document';
 import {STRINGS} from "../components/utils/constants";
 
 export default function Document() {
-  const title = 'Instant Domains | Domain Name Generator'
+  const title = 'Instant Domains - A Fast and Simple Domain Name Generator'
   const description = 'Quickly discover your perfect domain name. Describe your idea, generate, and check availability instantly.'
   const siteImage = STRINGS.SITE_IMAGE
   const url = 'https://getinstantdomains.com'
