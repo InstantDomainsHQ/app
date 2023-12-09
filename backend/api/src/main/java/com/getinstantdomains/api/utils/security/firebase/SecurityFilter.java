@@ -2,28 +2,25 @@ package com.getinstantdomains.api.utils.security.firebase;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseToken;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Stream;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import com.getinstantdomains.api.dto.SessionUser;
 import com.getinstantdomains.api.utils.firebase.FirebaseService;
 import com.getinstantdomains.api.utils.security.Credentials;
 import com.getinstantdomains.api.utils.security.UnsecurePaths;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseToken;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -140,13 +137,6 @@ public class SecurityFilter extends OncePerRequestFilter {
           } else {
               bearerToken = authorization;
           }
-      } else {
-        Optional<Cookie> cookie = Arrays.stream(httpServletRequest.getCookies())
-            .filter(it -> it.getName().equals("Authorization"))
-            .findFirst();
-        if (cookie.isPresent()) {
-          bearerToken = cookie.get().getValue();
-        }
       }
       return bearerToken;
   }

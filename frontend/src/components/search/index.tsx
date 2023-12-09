@@ -46,8 +46,7 @@ export default function SearchBox() {
   };
 
   useEffect(() => {
-    document.cookie = `Authorization=${authToken}`
-    const sock = new SockJS(BASE_PATH + "/ws")
+    const sock = new SockJS(`${BASE_PATH}/ws`)
     try {
       const client = Stomp.Stomp.over(() => sock);
       client.debug = () => {}

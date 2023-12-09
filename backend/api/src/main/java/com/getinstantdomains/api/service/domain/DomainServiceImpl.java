@@ -56,8 +56,7 @@ public class DomainServiceImpl implements DomainService {
 
   @Override
   public TaskId generateDomains(GenerateRequest generateRequest) {
-    if (!ObjectUtils.isEmpty(generateRequest.getQuery()) &&
-        generateRequest.getQuery().split(" ").length > 1) {
+    if (!ObjectUtils.isEmpty(generateRequest.getQuery())) {
       String taskId = "t_" + IDUtils.generateUid(IDUtils.SHORT_UID_LENGTH);
       gptService.gptCompletion(
           IDUtils.getSessionUser().getUserId(),

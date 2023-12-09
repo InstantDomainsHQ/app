@@ -4,6 +4,8 @@ services:
     image: 537408061242.dkr.ecr.us-east-2.amazonaws.com/instantdomains:frontend
     container_name: frontend
     restart: always
+    ports:
+      - 3000:3000
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`getinstantdomains.com`)"
