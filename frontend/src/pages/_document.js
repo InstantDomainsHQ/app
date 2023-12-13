@@ -12,6 +12,7 @@ export default function Document() {
           <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico" />
           <link rel='shortcut icon' href='/favicon.ico' />
           <meta name='impact-site-verification' content='118b324c-d517-451f-9d6e-cb4b3e64b49e'/>
+          <meta name='namecheap-site-verification' content='https://d1x2gijf3bj73j.cloudfront.net/instant-domains/namecheap-affiliate.png'/>
           <meta
             name="description"
             content="InstantDomains"
