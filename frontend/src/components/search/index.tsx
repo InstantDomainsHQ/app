@@ -1,4 +1,4 @@
-import {ERROR, getSearchResults, getTlds} from "@/src/components/utils/server-utils";
+import {DEBUG, ERROR, getSearchResults, getTlds} from "@/src/components/utils/server-utils";
 import React, {useEffect, useState} from "react";
 import {useAuthContext} from "@/src/components/context/AuthContext";
 import * as Stomp from '@stomp/stompjs';
@@ -93,9 +93,9 @@ export default function SearchBox() {
       const existingWhoIsList = oldList.filter(it => it.id === payload.id)
       if (existingWhoIsList && existingWhoIsList.length > 0) {
         const existing = existingWhoIsList[0]
-        console.log(payload)
+        DEBUG(payload)
 
-        console.log("Received:: ", payload)
+        DEBUG("Received:: ", payload)
         if (payload.tld) {
           existing.tlds[payload.tld] = {
             tld: payload.tld,

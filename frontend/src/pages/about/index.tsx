@@ -43,7 +43,7 @@ export default function Terms() {
               <p>We use a fine-tuned AI to do the actual name generation. We then check each domain name and TLD combination to see if it’s available or taken.</p>
               <p>You can use InstantDomains both on desktop and mobile to quickly identify your domain from a color-coded matrix.
               </p>
-              <p>InstantDomains is completely free to use. We get a small commission whenever you make a purchase through the the registrars we link to.
+              <p>InstantDomains is completely free to use.
               </p>
               <p>If you have any questions, concerns, or feedback, please feel free to email us at getinstantdomains@proton.me.</p>
             </article>
