@@ -94,6 +94,12 @@ export interface GenerateRequest {
      * @memberof GenerateRequest
      */
     query?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof GenerateRequest
+     */
+    tlds?: Array<string>;
 }
 /**
  * 

@@ -127,6 +127,12 @@
         "properties": {
           "query": {
             "type": "string"
+          },
+          "tlds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },

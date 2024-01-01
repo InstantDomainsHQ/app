@@ -42,11 +42,12 @@ public class GptServiceImpl implements GptService {
   }
 
   @Override
-  public String gptCompletion(String clientId, String prompt, String content, DomainService domainService) {
+  public String gptCompletion(String clientId, String prompt, String content, List<String> userSelectedTlds,
+      DomainService domainService) {
     try {
       List<ChatMessage> messages = buildChatMessage(prompt, content);
       log.info("GPT Request {}", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(messages));
-      new GptRequestHandlerImpl(clientId, objectMapper, openAiProps, domainService).handler(messages);
+      new GptRequestHandlerImpl(clientId, objectMapper, openAiProps, userSelectedTlds, domainService).handler(messages);
     } catch (Exception e) {
       log.error(e.getLocalizedMessage());
     }

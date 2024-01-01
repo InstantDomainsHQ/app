@@ -29,14 +29,17 @@ public class GptRequestHandlerImpl implements GptRequestHandler {
   private final ObjectMapper objectMapper;
   private final OpenAiProps openAiProps;
   private final OpenAiService openAiService;
+  private final List<String> userSelectedTlds;
   private final DomainService domainService;
 
+
   public GptRequestHandlerImpl(String clientId, ObjectMapper objectMapper,
-      OpenAiProps openAiProps, DomainService domainService) {
+      OpenAiProps openAiProps, List<String> userSelectedTlds, DomainService domainService) {
     this.clientId = clientId;
     this.objectMapper = objectMapper;
     this.openAiProps = openAiProps;
     this.domainService = domainService;
+    this.userSelectedTlds = userSelectedTlds;
     this.openAiService = buildClient();
   }
 
@@ -76,7 +79,7 @@ public class GptRequestHandlerImpl implements GptRequestHandler {
               .replace("https://", "")
               .replace(".com", "");
           chunks.clear();
-          domainService.performWhois(domain, clientId);
+          domainService.performWhois(domain, clientId, userSelectedTlds);
         }
       }
     }, Throwable::printStackTrace, openAiService::shutdownExecutor);

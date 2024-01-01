@@ -6,7 +6,7 @@ import {NextRouter} from "next/router";
 
 export const DEBUG = (...args: any[]) => {
   if (process.env.NODE_ENV !== "production") {
-    console.debug(args)
+    console.log(args)
   }
 }
 
@@ -16,15 +16,27 @@ export const ERROR = (...args: any[]) => {
   }
 }
 
-export const getSearchResults = async (query: string, authUser: User): Promise<DomainWhoIs> => {
+export const getSearchResults = async (query: string, tlds: Array<string>, authUser: User): Promise<DomainWhoIs> => {
   try {
     const token = await getAuthToken(authUser)
     const response = await new DomainApi(headerConfig(token))
-    .generateDomains({query: query})
+    .generateDomains({query: query, tlds: tlds})
     return response.data as DomainWhoIs
   } catch (e) {
     ERROR(e)
   }
+  return null
+}
+
+export const getWhoisResult = async (tld: string, domain: string, authUser: User): Promise<DomainWhoIs> => {
+  // try {
+  //   const token = await getAuthToken(authUser)
+  //   const response = await new DomainApi(headerConfig(token))
+  //   .generateDomains({query: query, tlds: tlds})
+  //   return response.data as DomainWhoIs
+  // } catch (e) {
+  //   ERROR(e)
+  // }
   return null
 }
 

@@ -1,4 +1,10 @@
-import {DEBUG, ERROR, getSearchResults, getTlds} from "@/src/components/utils/server-utils";
+import {
+  DEBUG,
+  ERROR,
+  getSearchResults,
+  getTlds,
+  getWhoisResult
+} from "@/src/components/utils/server-utils";
 import React, {useEffect, useState} from "react";
 import {useAuthContext} from "@/src/components/context/AuthContext";
 import * as Stomp from '@stomp/stompjs';
@@ -20,6 +26,8 @@ export default function SearchBox() {
   const [whoIsResults, setWhoIsResults] = useState<Array<WhoIsMap>>([])
   const [allTlds, setAllTlds] = useState<Array<string>>([])
   const [userSelectedTlds, setUserSelectedTlds] = useState<Array<string>>([])
+  const [userSelectedTldsInitial, setUserSelectedTldsInitial] = useState<Array<string>>([])
+  const [showSelectTldError, setShowSelectTldError] = useState(false)
 
   useEffect(() => {
     getAuthToken(authUser)
@@ -30,7 +38,8 @@ export default function SearchBox() {
   }, [authUser])
 
   useEffect(() => {
-    setWhoIsResults(loadPrevSearchResults())
+    clearSearchResults()
+    // setWhoIsResults(loadPrevSearchResults())
   }, []);
 
   useEffect(() => {
@@ -90,26 +99,30 @@ export default function SearchBox() {
 
   const onSearch = () => {
     let value = query?.trim()
-    if (value) {
-      clearSearchResults()
+    if (userSelectedTlds.length == 0) {
+      setShowSelectTldError(true)
+    } else if (value) {
+      setShowSelectTldError(false)
       setInProgress(true)
-      getSearchResults(value, authUser).then(res => {});
+      setUserSelectedTldsInitial(userSelectedTlds)
+      getSearchResults(value, userSelectedTlds, authUser).then(res => {});
       const timer = setTimeout(() => {
         setInProgress(false)
       }, 10000);
     }
   }
 
+  const onPartialSearch = (tld: string, domain: string) => {
+    getWhoisResult(tld, domain, authUser).then(res => {});
+  }
+
   const handleNewSearchResults = (payload: DomainWhoIs) => {
     if (payload) {
       const oldList = loadPrevSearchResults()
-      // console.log("oldList: ", oldList)
       const existingWhoIsList = oldList.filter(it => it.id === payload.id)
+      DEBUG("Received:: ", payload)
       if (existingWhoIsList && existingWhoIsList.length > 0) {
         const existing = existingWhoIsList[0]
-        DEBUG(payload)
-
-        DEBUG("Received:: ", payload)
         if (payload.tld) {
           existing.tlds[payload.tld] = {
             tld: payload.tld,
@@ -141,13 +154,23 @@ export default function SearchBox() {
   }
 
   const onUpdateUserSelectedTlds = (tlds: Array<string>) => {
+    // if (whoIsResults.length > 0) return // do not allow tld toggling on the table if there is an existing search result
+    const newSelection = tlds.filter(item => !userSelectedTlds.includes(item))
     setAllTlds([...allTlds])
     setUserSelectedTlds(tlds)
+    if (tlds.length > 0) {
+      setShowSelectTldError(false)
+    }
+
+    // Start a new search for the selected tlds if there is an existing search result
+    if (newSelection.length > 0 && !!query && whoIsResults.length > 0) {
+      // onPartialSearch()
+    }
   }
 
   return (
-      <section className="container px-4 mx-auto py-2">
-        <div className="m-6 w-screen max-w-screen-md mx-auto">
+      <section className="container mx-auto py-2">
+        <div className=" w-screen max-w-screen-md mx-auto">
           <div className="flex flex-col">
             <div className="rounded-xl  bg-white p-2 ">
               <div>
@@ -157,24 +180,31 @@ export default function SearchBox() {
                           <i className="fa fa-search text-gray-400 z-20 hover:text-gray-500"></i>
                         </div>
                         <textarea
-                            style={{
-                              paddingRight: "8rem",
-                              height: "5rem",
-                              paddingTop: "1.5rem"
-                            }}
                             rows={1}
                             required={true}
                             onChange={onChange}
-                             className="resize-none px-6 w-full rounded-3xl border border-gray-100 bg-gray-100 shadow-sm outline-none focus:border-blue-500 text-sm sm:text-2xl font-bold" placeholder="Describe your product"/>
-                          <div className="absolute top-4 sm:top-2 right-2 sm:px-6 px-3 py-1">
-                            <button
-                                onClick={onSearch}
-                                className="bg-blue-700 hover:bg-blue-900 text-white text-xs font-bold sm:px-4 py-2 px-2 rounded-full sm:text-lg">Generate</button>
+                             className="resize-none h-20 pt-5 pb-5 pr-10 sm:pr-20 pl-10 w-full mr-10 rounded-3xl border border-gray-100 bg-gray-100 shadow-sm outline-none focus:border-blue-500 text-sm sm:text-2xl font-bold" placeholder="Describe your product"/>
+                        <button
+                            onClick={onSearch}>
+                        <div className="absolute top-0 sm:top-0 right-0 sm:px-6 px-3 mr-5 bg-blue-700 hover:bg-blue-900 h-20 rounded-r-3xl w-[60px] sm:w-[100px]">
+                            <div className="h-20 mt-4">
+
+                                <img className="h-10 w-auto"
+                                     src="/assets/image/search.svg" alt=""/>
+
+                            </div>
                           </div>
+                        </button>
                       </div>
                 </div>
               </div>
             </div>
+            {showSelectTldError &&
+                <div className="flex flex-col">
+                  <span className="text-center text-red-500">You must select at least one domain extension</span>
+                </div>
+            }
+
             <div className="flex flex-col">
               <CheckBoxes
                   onUpdateUserSelectedTlds={onUpdateUserSelectedTlds}
@@ -196,7 +226,13 @@ export default function SearchBox() {
         {maybeShowNoResultsFound ?
             <div className="flex justify-center mx-auto max-w-full">
               <span className="ml-2 text-sm tracking-wide">No results found</span>
-            </div> : <>{whoIsResults.length > 0 && <ListView records={whoIsResults}/>}</>
+            </div> : <>{whoIsResults.length > 0 && <ListView
+                allTlds={allTlds}
+                userSelectedTlds={userSelectedTlds}
+                userSelectedTldsInitial={userSelectedTldsInitial}
+                records={whoIsResults}
+                clearSearchResults={clearSearchResults}
+            />}</>
         }
       </section>
   )

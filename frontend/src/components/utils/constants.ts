@@ -1,5 +1,5 @@
 export const STRINGS = {
-  MAX_PAGE_SIZE: 25,
+  MAX_PAGE_SIZE: Number.MAX_VALUE,
   SEARCH_RESULTS: "searchResults",
   TLDS: "tlds",
   AVAILABLE: "available",

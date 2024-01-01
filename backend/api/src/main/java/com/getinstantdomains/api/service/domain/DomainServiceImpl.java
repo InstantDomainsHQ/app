@@ -62,14 +62,14 @@ public class DomainServiceImpl implements DomainService {
       gptService.gptCompletion(
           IDUtils.getSessionUser().getUserId(),
           openAiProps.getDomainGeneratePrompt(),
-          generateRequest.getQuery(), this);
+          generateRequest.getQuery(), generateRequest.getTlds(), this);
       return new TaskId().taskId(taskId);
     }
     return new TaskId();
   }
 
   @Override
-  public void performWhois(String domain, final String clientId) {
+  public void performWhois(String domain, final String clientId, List<String> userSelectedTlds) {
     domain = domain.toLowerCase().strip().replace(" ", "");
     DomainEntity domainEntity = domainRepo.findByDomainName(domain);
     if (domainEntity == null) {
@@ -80,12 +80,14 @@ public class DomainServiceImpl implements DomainService {
     final DomainEntity d = domainEntity;
     Thread.startVirtualThread(() -> sendDomainNameToClient(d, clientId));
 
-    final List<TldEntity> tlds = tldRepo.findAllByTld(domain, domainProps.getTldExtensions());
+    final List<TldEntity> tlds = tldRepo.findAllByTld(domain, userSelectedTlds);
 
     Thread.startVirtualThread(() -> sendTldsToClient(d, tlds, clientId));
 
-    domainProps.getTlds().stream().forEach(it -> {
-      Thread.startVirtualThread(() -> whois(d, it, clientId));
+    domainProps.getTlds().forEach(it -> {
+      if (userSelectedTlds.contains(it.getTld())) {
+        Thread.startVirtualThread(() -> whois(d, it, clientId));
+      }
     });
 
   }
