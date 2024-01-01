@@ -9,6 +9,7 @@ import {DomainWhoIs, WebsocketPayload} from "@/src/codegen";
 import { BASE_PATH } from "@/src/codegen/base";
 import { InfinitySpin } from  'react-loader-spinner'
 import {getAuthToken} from "@/src/components/utils/headerConfig";
+import CheckBoxes from "@/src/components/checkbox";
 
 export default function SearchBox() {
   const {authUser} = useAuthContext()
@@ -17,6 +18,8 @@ export default function SearchBox() {
   const [maybeShowNoResultsFound, setMaybeShowNoResultsFound] = useState(false)
   const [authToken, setAuthToken] = useState("")
   const [whoIsResults, setWhoIsResults] = useState<Array<WhoIsMap>>([])
+  const [allTlds, setAllTlds] = useState<Array<string>>([])
+  const [userSelectedTlds, setUserSelectedTlds] = useState<Array<string>>([])
 
   useEffect(() => {
     getAuthToken(authUser)
@@ -30,8 +33,19 @@ export default function SearchBox() {
     setWhoIsResults(loadPrevSearchResults())
   }, []);
 
+  useEffect(() => {
+    setUserSelectedTlds([
+        ".com",
+        ".net",
+        ".org",
+        ".io",
+        ".ai",
+    ])
+  }, []);
+
   const fetchTlds = () => {
     getTlds(authUser).then(result => {
+      setAllTlds(result["tlds"])
       localStorage.setItem(STRINGS.TLDS, JSON.stringify(result))
     }).catch(e => ERROR(e));
   }
@@ -126,6 +140,11 @@ export default function SearchBox() {
     return []
   }
 
+  const onUpdateUserSelectedTlds = (tlds: Array<string>) => {
+    setAllTlds([...allTlds])
+    setUserSelectedTlds(tlds)
+  }
+
   return (
       <section className="container px-4 mx-auto py-2">
         <div className="m-6 w-screen max-w-screen-md mx-auto">
@@ -155,6 +174,12 @@ export default function SearchBox() {
                       </div>
                 </div>
               </div>
+            </div>
+            <div className="flex flex-col">
+              <CheckBoxes
+                  onUpdateUserSelectedTlds={onUpdateUserSelectedTlds}
+                  allTlds={allTlds}
+                  userSelectedTlds={userSelectedTlds}/>
             </div>
           </div>
 
