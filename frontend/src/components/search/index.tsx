@@ -137,9 +137,16 @@ export default function SearchBox() {
                         <div className="absolute top-4 left-3">
                           <i className="fa fa-search text-gray-400 z-20 hover:text-gray-500"></i>
                         </div>
-                        <input
+                        <textarea
+                            style={{
+                              paddingRight: "8rem",
+                              height: "5rem",
+                              paddingTop: "1.5rem"
+                            }}
+                            rows={1}
+                            required={true}
                             onChange={onChange}
-                            type="text" className="px-6 py-6 w-full rounded-3xl border border-gray-100 bg-gray-100 shadow-sm outline-none focus:border-blue-500 text-sm sm:text-2xl font-bold" placeholder="Describe your product"/>
+                             className="resize-none px-6 w-full rounded-3xl border border-gray-100 bg-gray-100 shadow-sm outline-none focus:border-blue-500 text-sm sm:text-2xl font-bold" placeholder="Describe your product"/>
                           <div className="absolute top-4 sm:top-2 right-2 sm:px-6 px-3 py-1">
                             <button
                                 onClick={onSearch}

@@ -58,6 +58,7 @@ public class DomainServiceImpl implements DomainService {
   public TaskId generateDomains(GenerateRequest generateRequest) {
     if (!ObjectUtils.isEmpty(generateRequest.getQuery())) {
       String taskId = "t_" + IDUtils.generateUid(IDUtils.SHORT_UID_LENGTH);
+      log.info("Query: {}", generateRequest.getQuery());
       gptService.gptCompletion(
           IDUtils.getSessionUser().getUserId(),
           openAiProps.getDomainGeneratePrompt(),
@@ -116,7 +117,8 @@ public class DomainServiceImpl implements DomainService {
       try {
         tldEntity.setStatus(objectMapper.writeValueAsString(whoisResponse.getDomainStatus()));
       } catch (JsonProcessingException e) {
-        log.error(e.getLocalizedMessage());
+        // pass
+//        log.error(e.getLocalizedMessage());
       }
     }
     tldRepo.save(tldEntity);
@@ -147,31 +149,41 @@ public class DomainServiceImpl implements DomainService {
           if (response.body() != null) {
             responseBody = response.body().string();
           }
-          log.info("Response: " + responseBody);
+          log.debug("Response: " + responseBody);
         } else {
-         log.error("WhoIs failed: {}", response.code());
+         log.error("WhoIs failed: {}, {}", domainName,  response.code());
         }
       }
     } catch (Exception e) {
-      log.error(e.getLocalizedMessage());
+      // pass
+//      log.error(e.getLocalizedMessage());
     }
     try {
       return objectMapper.readValue(responseBody, WhoIsResponse.class);
     } catch (Exception e) {
-      log.error(e.getLocalizedMessage());
+      // pass
+//      log.error(e.getLocalizedMessage());
     }
     return null;
   }
 
   private void sendTldsToClient(DomainEntity domainEntity, List<TldEntity> tlds, String clientId) {
     for (TldEntity tld : tlds) {
+      String whois = buildWhoIsUrl(domainEntity.getDomainName(), tld.getTld());
+      boolean isAvailable = domainIsAvailable(tld);
+      if (isAvailable) {
+        log.info("{}{} Available: {}", domainEntity.getDomainName(), tld.getTld(), isAvailable);
+      } else {
+        log.info("{}{} Available: {} WhoIs: {}", domainEntity.getDomainName(), tld.getTld(), isAvailable, whois);
+      }
+
       sendToClient(new DomainWhoIs()
               .name(domainEntity.getDomainName())
               .id(domainEntity.getId())
               .tld(tld.getTld())
               .price(getTldPrice(tld.getTld()))
               .whoisUrl(buildWhoIsUrl(domainEntity.getDomainName(), tld.getTld()))
-              .isAvailable(domainIsAvailable(tld))
+              .isAvailable(isAvailable)
               .expiresAt(getTimestamp(tld.getExpiresAt()))
               .affiliateLink(buildAffiliateLink(domainEntity.getDomainName(), tld.getTld()))
               .registeredAt(getTimestamp(tld.getRegisteredAt())),
@@ -232,9 +244,9 @@ public class DomainServiceImpl implements DomainService {
 
   private void _log(Object o) {
     try {
-      log.info(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(o));
+      log.debug(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(o));
     } catch (JsonProcessingException e) {
-      log.error(e.getLocalizedMessage());
+      // pass
     }
   }
 }

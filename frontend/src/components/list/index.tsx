@@ -109,28 +109,29 @@ const ListView: FC<WhoIsResults> = (props) => {
                   <td className={className} key={`${it}-${index}`}>
                     <div className={bgClassName}>
                       {status === STRINGS.AVAILABLE ?
-
+                          <a href={whoIs.tlds[it]?.affiliate_link} target="_blank" className="hover:no-underline text-black">
                         <div className="text-white font-bold block justify-center">
                             <span className="block text-center text-xs">Available</span>
                             <span className="block text-center h-4">{whoIs.tlds[it]?.price}</span>
-                        <span><button className="px-2 py-1 mt-1 bg-white hover:bg-gray-200 text-black text-xs font-bold  rounded-lg"> <a href={whoIs.tlds[it]?.affiliate_link} target="_blank" className="hover:no-underline text-black">
+                        <span><button className="px-2 py-1 mt-1 bg-white hover:bg-gray-200 text-black text-xs font-bold  rounded-lg">
                                     Click to Buy
-                                  </a></button></span>
+                                  </button></span>
                       </div>
+                          </a>
                           :
                           <>
                           {
                             status === STRINGS.NOT_AVAILABLE ?
+                                <a href={whoIs.tlds[it]?.whois_url} target="_blank" className="hover:no-underline text-black">
                               <div className="text-white font-bold block justify-center">
                                 <span className="block text-center text-xs">Taken</span>
                                 <span className="block text-center h-4"></span>
                                 <span><button className="px-2 py-1 mt-1 bg-white hover:bg-gray-200 text-black text-xs font-bold  rounded-lg">
-                                  <a href={whoIs.tlds[it]?.whois_url} target="_blank" className="hover:no-underline text-black">
                                     WhoIs
-                                  </a>
                                 </button>
                                 </span>
-                              </div> :
+                              </div>
+                                </a>:
                               <>
                                 <div role="status" className="h-14 justify-center align-middle py-4">
                                   <svg aria-hidden="true" className=" inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
